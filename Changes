@@ -1,5 +1,9 @@
 # $Id$
 
+1.18 - Tue Feb 10 20:46:05 2004
+* Adam Trickett added support for continuation lines
+* I added docs for config file formats
+
 1.17 - Sun Nov 30 11:12:50 2003
 	+ some fix ups for the POD docs
 	+ fixed a problem in t/pod.t so the test finds the files
