@@ -37,7 +37,7 @@ ConfigReader::Simple - Simple configuration file parser
 
 	$config->get( "Foo" );
 
-   if( $config->exists( "Bar" ) )
+	if( $config->exists( "Bar" ) )
    		{
    		print "Bar was in the config file\n";
    		}
@@ -562,11 +562,12 @@ members of the project can shepherd this module appropriately.
 
 =head1 AUTHORS
 
-brian d foy, E<lt>bdfoy@cpan.orgE<gt>
+brian d foy, E<lt>bdfoy@cpan.orgE<gt>, currently maintained
+by Andy Lester E<lt>petdance@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2002 brian d foy.  All rights reserved.
+Copyright (c) 2002-2003 brian d foy.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
