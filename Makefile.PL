@@ -23,6 +23,7 @@ WriteMakefile(
 
     'PREREQ_PM'	    => {
 		'Test::More'       => '0',
+		'Test::Warn'       => '0',
 		},
 		                      
 	'MAN3PODS' => {
