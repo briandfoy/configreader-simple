@@ -5,10 +5,11 @@ Makefile.PL
 eg/example.pl
 t/example.config
 t/global.config
-t/01.load.t
-t/02.get.t
-t/02.set.t
-t/02.remove.t
-t/03.exists.t
-t/04.clone.t
+t/load.t
+t/pod.t
+t/get.t
+t/set.t
+t/remove.t
+t/exists.t
+t/clone.t
 Changes
