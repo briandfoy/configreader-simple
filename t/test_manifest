@@ -1,0 +1,7 @@
+load.t
+pod.t
+get.t
+set.t
+remove.t
+exists.t
+clone.t
