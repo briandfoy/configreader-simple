@@ -10,7 +10,5 @@ t/get.t
 t/global.config
 t/load.t
 t/pod.t
-t/prereq.t
 t/remove.t
 t/set.t
-t/test_manifest
