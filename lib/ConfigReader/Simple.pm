@@ -23,7 +23,12 @@ ConfigReader::Simple - Simple configuration file parser
 
    my @directives = $config->directives;
 
-   $config->get("Foo");
+   $config->get( "Foo" );
+   
+   if( $config->exists( "Bar" ) )
+   		{
+   		print "Bar was in the config file\n";
+   		}
    
 
 =head1 DESCRIPTION
@@ -35,11 +40,11 @@ ConfigReader::Simple - Simple configuration file parser
 =cut
 
 
-=head1 CONSTRUCTOR
+=head1 METHODS
 
 =item new ( FILENAME, DIRECTIVES )
 
-This is the constructor for a new ConfigReader::Simple object.
+Creates a ConfigReader::Simple object.
 
 C<FILENAME> tells the instance where to look for the configuration
 file.
@@ -52,23 +57,23 @@ the keys in the configuration file, a sub set of keys or no keys at all.
 
 =cut
 
-sub new {
-   my $prototype = shift;
-   my $filename = shift;
-   my $keyref = shift;
-
-   my $class = ref($prototype) || $prototype;
-   my $self  = {};
-
-   $self->{"filename"} = $filename;
-   $self->{"validkeys"} = $keyref;
-
-   bless($self, $class);
-
+sub new 
+	{
+	my $class    = shift;
+	my $filename = shift;
+	my $keyref   = shift;
+	
+	my $self  = {};
+	
+	$self->{"filename"}  = $filename;
+	$self->{"validkeys"} = $keyref;
+	
+	bless $self, $class;
+	
 	$self->parse();
-
-   return $self;
-}
+	
+	return $self;
+	}
 
 sub AUTOLOAD
 	{
@@ -81,13 +86,11 @@ sub AUTOLOAD
 	$self->get( $method );
 	} 
 
-sub DESTROY {
-   my $self = shift;
+sub DESTROY 
+	{	
+	return 1;
+	}
 
-   return 1;
-}
-
-=pod
 =item parse ()
 
 This does the actual work.  No parameters needed.
@@ -122,19 +125,19 @@ sub parse {
 
 }
 
-=pod
-=item get ( DIRECTIVE )
+=item get( DIRECTIVE )
 
 Returns the parsed value for that directive.
 
 =cut
 
-sub get {
-   my $self = shift;
-   my $key = shift;
-
-   return $self->{"config_data"}{$key};
-}
+sub get 
+	{
+	my $self = shift;
+	my $key = shift;
+	
+	return $self->{"config_data"}{$key};
+	}
 
 =item directives()
 
@@ -152,6 +155,18 @@ sub directives
 	return @keys;
 	}
 
+=item exists( DIRECTIVE )
+
+=cut
+
+sub exists
+	{
+	my $self = shift;
+	my $name = shift;
+	
+	return CORE::exists $self->{"config_data"}{ $name };
+	}
+	
 # Internal methods
 
 sub parse_line {
@@ -170,8 +185,6 @@ sub parse_line {
    return ($key, $value);
 }
 
-
-=pod
 
 =item _validate_keys ( )
 
@@ -201,8 +214,6 @@ sub _validate_keys {
 
    return 1;
 }
-
-=pod
 
 =head1 LIMITATIONS/BUGS
 
@@ -235,7 +246,4 @@ it under the same terms as Perl itself.
 
 =cut
 
-#
-# End code.
-#
 1;
