@@ -12,3 +12,4 @@ t/load.t
 t/pod.t
 t/remove.t
 t/set.t
+META.yml                                 Module meta-data (added by MakeMaker)
