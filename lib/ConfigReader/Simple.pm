@@ -187,7 +187,9 @@ sub parse
 
 =item get( DIRECTIVE )
 
-Returns the parsed value for that directive.
+Returns the parsed value for that directive.  For directives
+which did not have a value in the configuration file, C<get>
+returns the empty string.
 
 =cut
 
