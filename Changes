@@ -1,5 +1,9 @@
 # $Id$
 
+New in 1.14
+	- cleaned up Makefile.PL
+	- added prereq test
+
 New in 1.12
 	_ added add_config_file() to pull in more configuration directives
 	after you have already created the object.

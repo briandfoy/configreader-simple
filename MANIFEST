@@ -3,10 +3,12 @@ lib/ConfigReader/Simple.pm
 MANIFEST
 Makefile.PL
 eg/example.pl
+t/test_manifest
 t/example.config
 t/global.config
 t/load.t
 t/pod.t
+t/prereq.t
 t/get.t
 t/set.t
 t/remove.t

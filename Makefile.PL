@@ -9,13 +9,14 @@ my $tests = do {
         };
 
 WriteMakefile(
-    'NAME'	   => 'ConfigReader::Simple',
-    'VERSION_FROM' => 'lib/ConfigReader/Simple.pm',
+    'NAME'	       => 'ConfigReader::Simple',
+	'VERSION_FROM' => 'lib/ConfigReader/Simple.pm',
 
 	'PREREQ_PM'    => {
-		File::Find::Rule => '0',
-		Test::More       => '0',
-		Test::Pod        => '0',
+		'File::Find::Rule' => '0',
+		'Test::More'       => '0',
+		'Test::Pod'        => '0',
+		'Test::Prereq'     => '0',
 		},
 		
     'dist'         => { 
