@@ -124,7 +124,7 @@ sub new_multiple
 	return $self;
 	}
 
-=item new_multiple( Files => ARRAY_REF, Keys => ARRAY_REF )
+=item new_string( Strings => ARRAY_REF, Keys => ARRAY_REF )
 
 Create a configuration object from several strings listed
 in the anonymous array value for the C<Strings> key.  The
