@@ -6,6 +6,7 @@ use subs qw(_init_errors);
 use vars qw($VERSION $AUTOLOAD %ERROR $ERROR $Warn $Die);
 
 use Carp qw(croak carp);
+use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
@@ -15,6 +16,8 @@ $Warn = 0;
 my $DEBUG = 0;
 my $Error = '';
 
+sub SUCCESS() { 1 };
+sub FAILURE() { 0 };
 
 =head1 NAME
 
@@ -41,7 +44,25 @@ ConfigReader::Simple - Simple configuration file parser
    		{
    		print "Bar was in the config file\n";
    		}
+   		
+   	# copy an object to play with it separately
+   	my $clone = $config->clone;
+   	
+   	# only affects clone
+   	$clone->set( "Foo", "Buster" );
 
+	# save the config to a single file
+	$clone->save( "configrc" )
+
+	# save the config to a single file, but only with
+	# certain directives
+	$clone->save( "configrc" => [qw(Foo Bar)] )
+	
+	# save to multiple configuration files
+	$clone->save( 
+		"configrc" => [qw(Foo Bar)],
+		"global"   => [qw(Baz Quux)],
+		);
 
 =head1 DESCRIPTION
 
@@ -334,6 +355,8 @@ sub parse
 			
 		return;
 		}
+		
+	$self->{"file_fields"}{$file} = [];
 	
 	while( <CONFIG> )
 		{
@@ -350,6 +373,7 @@ sub parse
 		carp "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
 		
 		$self->{"config_data"}{$key} = $value;
+		push @{ $self->{"file_fields"}{$file} }, $key;
 		}
 		
 	close(CONFIG);
@@ -410,12 +434,30 @@ Sets the value for DIRECTIVE to VALUE.  The DIRECTIVE
 need not already exist.  This overwrites previous 
 values.
 
+The VALUE must be a simple scalar.  It cannot be a reference.
+If the VALUE is a reference, the function prints a warning
+and returns false.
+
 =cut
 
 sub set 
 	{
 	my $self = shift;
 	my( $key, $value ) = @_;
+	
+	if( ref $value )
+		{
+		$ERROR = "Second argument to set must be a simple scalar";
+		if( $Warn )
+			{
+			carp $ERROR;
+			return;
+			}
+		elsif( $Die )
+			{
+			croak $ERROR;
+			}
+		}
 	
 	$self->{"config_data"}{$key} = $value;
 	}
@@ -494,31 +536,142 @@ sub exists
 =item clone
 
 Return a copy of the object.  The new object is distinct
-from the original.
+from the original so you can make changes to the new object
+without affecting the old one.
 
 =cut
 
 # this is only the first stab at this -- from 35,000
 # feet in coach class
+# 
+# I expect that the hash will be very simple.  Some keys
+# might have a reference value, but that reference value
+# will be "flat", so it won't have references in it.
 sub clone
 	{
 	my $self = shift;
 	
-	my $clone = {};
+	my $clone = bless {}, ref $self;
 	
-	$clone->{"filename"}  = $self->{"filename"};
-	$clone->{"validkeys"} = $self->{"validkeys"};
-	
-	foreach my $key ( keys %{ $self->{'config_data'} } )
+	$clone->{"filenames"} = [ @{ $self->{"filenames"} } ];
+	$clone->{"validkeys"} = [ @{ $self->{"validkeys"} } ];
+
+	foreach my $file ( keys %{ $self->{"file_fields"} } )
 		{
-		$clone->{'config_data'}{$key} = $self->{'config_data'}{$key};
+		$clone->{"file_fields"}{ $file } 
+			= [ @{ $self->{"file_fields"}{ $file } } ];
 		}
 			
-	bless $clone, __PACKAGE__;
-	
+	foreach my $key ( $self->directives )
+		{
+		$clone->set( $key, $self->get( $key ) );
+		}
+				
 	return $clone;
 	}
 
+=item save( FILENAME [ => ARRAY_REF [, FILENAME => ARRAY_REF ] ] );
+
+The save method works in three ways, depending on the argument list.
+
+With a single argument, the save function attempts to save all of the
+field-value pairs of the object to the file named by the argument.
+
+	$clone->save( "configrc" );
+
+With two arguments, the method expects the second argument to be an
+array reference which lists the directives to save in the file.
+
+	$clone->save( "configrc" => [qw(Foo Bar)] );
+
+With more than two arguments, the method expects filename-list pairs.
+The method will save in each file the values in their respective 
+array references.
+
+	$clone->save(
+		"configrc" => [qw(Foo Bar)],
+		"global"   => [qw(Baz Quux)],
+		);
+
+In the last two cases, the method checks that the value for each pair
+is an array reference before it affects any files.  It croaks if
+any value is not an array reference.
+
+Once the method starts writing files, it tries to write all of the
+specified files. Even if it has a problem with one of them, it continues
+onto the next one.  The method does not necessarily write the files
+in the order they appear in the argument list, and it does not check
+if you specified the same file twice.
+	
+=cut
+
+sub save	
+	{
+	my $self = shift;
+	my @args = @_;
+	
+	if( @args == 0 ) # no args!
+		{
+		carp "No arguments to method!";
+		return;
+		}
+		
+	if( @args == 1 )	# this is a single file
+		{
+		push @args, [ $self->directives ];
+		}
+		
+	unless( @args % 2 == 0 ) { croak "Odd number of arguments" };
+	
+	my %hash = @args;
+	
+	foreach my $value ( values %hash )
+		{
+		croak "Argument is not an array reference"
+			unless isa( $value, 'ARRAY' );
+		}
+		
+	foreach my $file ( keys %hash )
+		{
+		carp $ERROR unless $self->_save( $file, $hash{$file} );
+		}
+		
+	1;
+	}
+	
+sub _save
+	{
+	my $self = shift;
+	my $file = shift;
+	
+	my $directives = shift;
+
+	unless( isa( $directives, 'ARRAY' ) )
+		{
+		$ERROR = 'Argument is not an array reference';
+		return;
+		}
+		
+	my $fh;
+	
+	unless( open $fh, "> $file" )
+		{
+		$ERROR = $!;
+		
+		return;
+		}
+		
+	foreach my $directive ( @$directives )
+		{
+		print $fh ( join "\t", $directive, $self->get( $directive ) );
+		print $fh "\n";
+		}
+		
+	close $fh;
+	
+	return SUCCESS;
+	}
+	
 # Internal methods
 
 sub parse_line 
@@ -575,7 +728,7 @@ sub _validate_keys
 			}
 		}
 
-	return 1;
+	return SUCCESS;
 	}
 
 =back
@@ -614,24 +767,26 @@ ignored.
 
 Bek Oberin E<lt>gossamer@tertius.net.auE<gt> wote the original module
 
-Kim Ryan E<lt>kimaryan@ozemail.com.auE<gt> adapted the module to make declaring
-keys optional.  Thanks Kim.
+Kim Ryan E<lt>kimaryan@ozemail.com.auE<gt> adapted the module to make
+declaring keys optional.  Thanks Kim.
 
 Alan W. Jurgensen E<lt>jurgensen@berbee.comE<gt> added a change to allow
 the NAME=VALUE format in the configuration file.
 
-Andy Lester, E<lt>petdance@cpan.orgE<gt>, for maintaining the
-module while brian was on active duty.
+Andy Lester, E<lt>petdance@cpan.orgE<gt>, for maintaining the module
+while brian was on active duty.
 
 Adam Trickett, E<lt>atrickett@cpan.orgE<gt>, added multi-line support.
 You might want to see his C<Config::Trivial> module.
+
+Greg White has been a very patient user and tester.
 
 =head1 SOURCE AVAILABILITY
 
 This source is part of a SourceForge project which always has the
 latest sources in CVS, as well as all of the previous releases.
 
-	https://sourceforge.net/projects/brian-d-foy/
+	http://sourceforge.net/projects/brian-d-foy/
 	
 If, for some reason, I disappear from the world, one of the other
 members of the project can shepherd this module appropriately.

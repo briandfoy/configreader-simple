@@ -6,3 +6,4 @@ set.t
 remove.t
 exists.t
 clone.t
+save.t
