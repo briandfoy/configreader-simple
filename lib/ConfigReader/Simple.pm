@@ -3,7 +3,7 @@ use strict;
 
 # $Id$
 
-use vars qw($VERSION);
+use vars qw($VERSION $AUTOLOAD);
 
 use Carp qw(croak);
 
@@ -68,6 +68,16 @@ sub new {
    return $self;
 }
 
+sub AUTOLOAD
+	{
+	my $self = shift;
+
+	my $method = $AUTOLOAD;
+
+	$method =~ s/.*:://;
+
+	$self->get( $method );
+	} 
 
 sub DESTROY {
    my $self = shift;
