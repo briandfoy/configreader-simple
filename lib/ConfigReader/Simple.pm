@@ -21,6 +21,8 @@ ConfigReader::Simple - Simple configuration file parser
 
    $config = ConfigReader::Simple->new("configrc", [qw(Foo Bar Baz Quux)]);
 
+   my @directives = $config->directives;
+
    $config->get("Foo");
    
 
@@ -133,6 +135,22 @@ sub get {
 
    return $self->{"config_data"}{$key};
 }
+
+=item directives()
+
+Returns a list of all of the directive names found in the configuration
+file. The keys are sorted ASCII-betically.
+
+=cut
+
+sub directives
+	{
+	my $self = shift;
+
+	my @keys = sort keys %{ $self->{"config_data"} };
+
+	return @keys;
+	}
 
 # Internal methods
 
