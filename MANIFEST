@@ -2,7 +2,6 @@
 lib/ConfigReader/Simple.pm
 MANIFEST
 Makefile.PL
-README
 eg/example.pl
 t/example.config
 t/01.load.t
