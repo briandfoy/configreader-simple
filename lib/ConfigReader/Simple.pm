@@ -31,12 +31,12 @@ ConfigReader::Simple - Simple configuration file parser
 	my @directives = $config->directives;
 
 	$config->get( "Foo" );
-   
+
    if( $config->exists( "Bar" ) )
    		{
    		print "Bar was in the config file\n";
    		}
-   
+
 
 =head1 DESCRIPTION
 
@@ -44,10 +44,9 @@ C<ConfigReader::Simple> reads and parses simple configuration files. It's
 designed to be smaller and simpler than the C<ConfigReader> module
 and is more suited to simple configuration files.
 
-=cut
-
-
 =head1 METHODS
+
+=over 4
 
 =item new ( FILENAME, DIRECTIVES )
 
@@ -97,7 +96,7 @@ may override with more specific ones:
 This function carps if the values are not array references.
 
 =cut
-	
+
 sub new_multiple
 	{
 	my $class    = shift;
@@ -107,10 +106,10 @@ sub new_multiple
 	
 	$args{'Keys'} = [] unless defined $args{'Keys'};
 	
-	carp( __PACKAGE__ . ': Files argument must be an array reference')
-		unless ref $args{'Files'} eq 'ARRAY';
+	carp( __PACKAGE__ . ': Strings argument must be a array reference')
+		unless UNIVERSAL::isa( $args{'Files'}, 'ARRAY' );
 	carp( __PACKAGE__ . ': Keys argument must be an array reference')
-		unless ref $args{'Keys'} eq 'ARRAY';
+		unless UNIVERSAL::isa( $args{'Keys'}, 'ARRAY' );
 		
 	$self->{"filenames"} = $args{'Files'};
 	$self->{"validkeys"} = $args{'Keys'};
@@ -125,6 +124,50 @@ sub new_multiple
 	return $self;
 	}
 
+=item new_multiple( Files => ARRAY_REF, Keys => ARRAY_REF )
+
+Create a configuration object from several strings listed
+in the anonymous array value for the C<Strings> key.  The
+module reads the strings in the same order that they appear
+in the array.  Later values override earlier ones.  This
+allows you to specify global configurations which you 
+may override with more specific ones:
+
+	ConfigReader::Simple->new_strings(
+		Strings => [ \$global, \$local ],
+		);
+
+This function carps if the values are not array references.
+
+=cut
+
+sub new_string
+	{
+	my $class = shift;
+	my %args  = @_;
+	
+	my $self = {};
+	
+	$args{'Keys'} = [] unless defined $args{'Keys'};
+
+	carp( __PACKAGE__ . ': Strings argument must be a array reference')
+		unless UNIVERSAL::isa( $args{'Strings'}, 'ARRAY' );
+	carp( __PACKAGE__ . ': Keys argument must be an array reference')
+		unless UNIVERSAL::isa( $args{'Keys'}, 'ARRAY' );
+
+	bless $self, $class;
+
+	$self->{"strings"} = $args{'Strings'};
+	$self->{"validkeys"} = $args{'Keys'};
+	
+	foreach my $string ( @{ $self->{"strings"} } )
+		{
+		$self->parse_string( $string );
+		}
+		
+	return $self;
+	}
+	
 =item add_config_file( FILENAME )
 
 Parse another configuration file and add its directives to the
@@ -174,7 +217,7 @@ sub DESTROY
 
 =item parse( FILENAME )
 
-This does the actual work.  No parameters needed.
+This does the actual work.
 
 This is automatically called from C<new()>, although you can reparse
 the configuration file by calling C<parse()> again.
@@ -206,6 +249,35 @@ sub parse
 	return 1;
 	}
 
+=item parse_from_string( SCALAR_REF )
+
+Parses the string inside the reference SCALAR_REF just as if
+it found it in a file.
+
+=cut
+
+sub parse_string
+	{
+	my $self   = shift;
+	my $string = shift;
+	
+	my @lines = split /\r?\n/, $$string;
+	
+	foreach my $line ( @lines )
+		{
+		next if $line =~ /^\s*(#|$)/; 
+		
+		my ($key, $value) = &parse_line($line);
+		warn "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
+		
+		$self->{"config_data"}{$key} = $value;
+		}
+			
+	$self->_validate_keys;
+	
+	return 1;
+	}
+	
 =item get( DIRECTIVE )
 
 Returns the parsed value for that directive.  For directives
@@ -366,7 +438,6 @@ check that those keys actually occur in the configuration file.
 
 =cut
 
-
 sub _validate_keys 
 	{
 	my $self = shift;
@@ -389,6 +460,8 @@ sub _validate_keys
 
 	return 1;
 	}
+
+=back
 
 =head1 LIMITATIONS/BUGS
 
