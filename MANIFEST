@@ -4,5 +4,11 @@ MANIFEST
 Makefile.PL
 eg/example.pl
 t/example.config
+t/global.config
 t/01.load.t
+t/02.get.t
+t/02.set.t
+t/02.remove.t
+t/03.exists.t
+t/04.clone.t
 Changes
