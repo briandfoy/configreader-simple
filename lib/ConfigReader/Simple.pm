@@ -49,6 +49,70 @@ C<ConfigReader::Simple> reads and parses simple configuration files. It is
 designed to be smaller and simpler than the C<ConfigReader> module
 and is more suited to simple configuration files.
 
+=head2 The configuration file format
+
+The configuration file uses a line-oriented format, meaning
+that the directives do not have containers.  The values can
+be split across lines with a continuation character, but for
+the most part everything ends up on the same line.
+
+The first group of non-whitespace characters is the
+"directive", or the name of the configuration item.  The
+linear whitespace after that separates the directive from
+the "value", which is the rest of the line, including any
+other whitespace.
+
+In this example, the directive is "Camel" and the value is
+"Dromedary".
+
+	Camel Dromedary
+	
+Optionally, you can use a equal sign to separate the directive
+from the value.
+
+	Camel=Dromedary
+	
+The equal sign can also have whitespace on either or both
+sides.
+
+	Camel = Dromedary
+	Camel= Dromedary
+	
+In the next example, the directive is "Llama" and the value
+is "Live from Peru"
+
+	Llama Live from Peru
+	
+This is the same, to ConfigReader::Simple, as the following
+which has more whitespace between the directive and the value.
+
+	Llama     Live from Peru
+	
+You can also enclose the value in single or double quotes.
+
+	Llama "Live from Peru"
+	Llama 'Live from Peru'
+	Llama='Live from Peru'
+
+In some cases you may want to split the logical line across
+two lines, perhaps to see it better in a terminal window.
+For that, use a \ followed only by whitespace.  To split the
+last entry across two lines, we use the \ at the end of the
+line. These three entries are the same:
+
+	Llama Live from Peru
+
+	Llama Live from \
+	Peru
+
+	Llama Live \
+	from \
+	Peru
+
+If a line is only whitespace, or the first whitespace character is 
+a #, the Perl comment character, ConfigReader::Simple ignores the
+line unless it is the continuation of the previous line.
+
 =head2 Methods
 
 =over 4
@@ -273,6 +337,12 @@ sub parse
 	
 	while( <CONFIG> )
 		{
+		if ( s/\\ \s* $//x )
+			{
+			$_ .= <CONFIG>;
+			redo unless eof CONFIG;
+			}
+			
 		chomp;
 		next if /^\s*(#|$)/; 
 		
@@ -553,6 +623,9 @@ the NAME=VALUE format in the configuration file.
 Andy Lester, E<lt>petdance@cpan.orgE<gt>, for maintaining the
 module while brian was on active duty.
 
+Adam Trickett, E<lt>atrickett@cpan.orgE<gt>, added multi-line support.
+You might want to see his C<Config::Trivial> module.
+
 =head1 SOURCE AVAILABILITY
 
 This source is part of a SourceForge project which always has the
@@ -565,12 +638,11 @@ members of the project can shepherd this module appropriately.
 
 =head1 AUTHORS
 
-brian d foy, E<lt>bdfoy@cpan.orgE<gt>, currently maintained
-by Andy Lester E<lt>petdance@cpan.orgE<gt>
+brian d foy, E<lt>bdfoy@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2002-2003 brian d foy.  All rights reserved.
+Copyright (c) 2002-2004 brian d foy.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

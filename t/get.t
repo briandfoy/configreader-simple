@@ -1,6 +1,6 @@
 # $Id$
 
-use Test::More tests => 26;
+use Test::More tests => 30;
 
 use ConfigReader::Simple;
 
@@ -19,6 +19,10 @@ is( $config->Test2, 'Test 2 value' );
 is( $config->get( 'Zero' ), '0', 'Zero has right value as string' );
 is( $config->get( 'Zero' ),  0,, 'Zero has right value as number' );
 is( $config->get( 'Undef' ), '', 'Undef has right value (empty)'  );
+
+# get long lines
+is( $config->get( 'Test10' ), 'foo bar baz', 'Continuation line has right value');
+is( $config->Test10, 'foo bar baz') ;
 
 # get things that do not exist
 # using get
@@ -45,6 +49,8 @@ is( $config->get( 'Scope' ), 'Global',
 	'Scope has right value with AUTOLOAD' );
 is( $config->get( 'Test2' ), 'Test 2 value', 
 	'Test2 has right value with AUTOLOAD' );
+is( $config->get( 'Test10'), 'foo bar baz',
+       'Test10 has right value with AUTOLOAD' );
 
 # try it one at a time
 $config = ConfigReader::Simple->new( "t/example.config" );
@@ -53,6 +59,8 @@ is( $config->get( 'Test3' ), 'foo',
 	'Test3 has right value with get(), before global' );
 is( $config->get( 'Test2' ), 'Test 2 value',
 	'Test2 has right value with get(), before global' );
+is( $config->get( 'Test10' ), 'foo bar baz',
+       'Test10 has right value with get), before global' );
 
 $config->add_config_file( "t/global.config" );
 is( $config->get( 'Scope' ), 'Global', 
