@@ -4,7 +4,6 @@ use Test::More tests => 5;
 
 use ConfigReader::Simple;
 
-my $config = '';
 my @Directives = qw( Test1 Test2 Test3 Test4 );
 
 my $config = ConfigReader::Simple->new( "t/example.config", \@Directives );
