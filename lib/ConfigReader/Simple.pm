@@ -3,7 +3,7 @@ package ConfigReader::Simple;
 use strict;
 
 use subs qw(_init_errors);
-use vars qw($VERSION $AUTOLOAD $Warn %ERROR $ERROR $Warn $Die);
+use vars qw($VERSION $AUTOLOAD %ERROR $ERROR $Warn $Die);
 
 use Carp qw(croak carp);
 
@@ -542,13 +542,16 @@ ignored.
 
 =head1 CREDITS
 
-Bek Oberin <gossamer@tertius.net.au> wote the original module
+Bek Oberin E<lt>gossamer@tertius.net.auE<gt> wote the original module
 
-Kim Ryan <kimaryan@ozemail.com.au> adapted the module to make declaring
+Kim Ryan E<lt>kimaryan@ozemail.com.auE<gt> adapted the module to make declaring
 keys optional.  Thanks Kim.
 
-Alan W. Jurgensen <jurgensen@berbee.com> added a change to allow
+Alan W. Jurgensen E<lt>jurgensen@berbee.comE<gt> added a change to allow
 the NAME=VALUE format in the configuration file.
+
+Andy Lester, E<lt>petdance@cpan.orgE<gt>, for maintaining the
+module while brian was on active duty.
 
 =head1 SOURCE AVAILABILITY
 
