@@ -1,17 +1,16 @@
-# $Id$
-lib/ConfigReader/Simple.pm
-MANIFEST
+Changes
+MANIFEST			This list of files
 Makefile.PL
 eg/example.pl
-t/test_manifest
+lib/ConfigReader/Simple.pm
+t/clone.t
 t/example.config
+t/exists.t
+t/get.t
 t/global.config
 t/load.t
 t/pod.t
 t/prereq.t
-t/get.t
-t/set.t
 t/remove.t
-t/exists.t
-t/clone.t
-Changes
+t/set.t
+t/test_manifest
