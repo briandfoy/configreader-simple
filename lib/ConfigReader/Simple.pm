@@ -40,9 +40,9 @@ ConfigReader::Simple - Simple configuration file parser
 
 =head1 DESCRIPTION
 
-   C<ConfigReader::Simple> reads and parses simple configuration files. It's
-   designed to be smaller and simpler than the C<ConfigReader> module
-   and is more suited to simple configuration files.
+C<ConfigReader::Simple> reads and parses simple configuration files. It's
+designed to be smaller and simpler than the C<ConfigReader> module
+and is more suited to simple configuration files.
 
 =cut
 
@@ -123,6 +123,27 @@ sub new_multiple
 		}
 		
 	return $self;
+	}
+
+=item add_config_file( FILENAME )
+
+Parse another configuration file and add its directives to the
+current configuration object. Any directives already defined 
+will be replaced with the new values found in FILENAME.
+
+=cut
+
+sub add_config_file
+	{
+	my $self     = shift;
+	my $filename = shift;
+	
+	return unless ( -e $filename and -r _ );
+	
+	push @{ $self->{"filenames"} }, $filename
+		if $self->parse( $filename );
+	
+	return 1;
 	}
 	
 sub new_from_prototype
@@ -378,6 +399,8 @@ ignored.
 
 =head1 CREDITS
 
+Bek Oberin <gossamer@tertius.net.au> wote the original module
+
 Kim Ryan <kimaryan@ozemail.com.au> adapted the module to make declaring
 keys optional.  Thanks Kim.
 
@@ -387,13 +410,11 @@ the NAME=VALUE format in the configuration file.
 
 =head1 AUTHORS
 
-Bek Oberin <gossamer@tertius.net.au>
-
-now maintained by brian d foy <bdfoy@cpan.org>
+brian d foy, <bdfoy@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000 Bek Oberin.  All rights reserved.
+Copyright (c) 2002 brian d foy.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

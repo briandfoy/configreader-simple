@@ -1,5 +1,13 @@
 # $Id$
 
+New in 1.12
+	_ added add_config_file() to pull in more configuration directives
+	after you have already created the object.
+	
+New in 1.11
+	- added new_multiple() to parse multiple files into the same
+	object.
+	
 New in 0.91
 	- you don't need to call parse() since new() does it for you
 	- you can use the NAME=VALUE format in config files thanks to
