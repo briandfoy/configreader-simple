@@ -1,0 +1,21 @@
+
+New in 0.9
+   - Bumped up the version number because it's nearly mature
+   - Now you can declare all, some or no keys and it will only die if a
+     declared key is not found in the config file. 
+     (Kim Ryan <kimaryan@ozemail.com.au>)
+
+New in 0.5
+   - Changed module name to ConfigReader::Simple to match up with
+     other modules in CPAN better.
+
+New in 0.4
+   - Quote-delimiters now have to be matched, ie not 'foo" etc.
+
+New in 0.3
+   - Doesn't get confused by trailing whitespace
+
+   - Copes with quote-delimited strings as long as they're all on the
+   same line.
+
+

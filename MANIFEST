@@ -1,0 +1,8 @@
+lib/ConfigReader/Simple.pm
+MANIFEST
+Makefile.PL
+README
+example.pl
+example.config
+test.pl
+Changes
