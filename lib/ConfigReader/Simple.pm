@@ -17,13 +17,20 @@ ConfigReader::Simple - Simple configuration file parser
 
 =head1 SYNOPSIS
 
-   use ConfigReader::Simple;
+	use ConfigReader::Simple;
 
-   $config = ConfigReader::Simple->new("configrc", [qw(Foo Bar Baz Quux)]);
+	# parse one file
+	$config = ConfigReader::Simple->new("configrc", [qw(Foo Bar Baz Quux)]);
 
-   my @directives = $config->directives;
+	# parse multiple files, in order
+	$config = ConfigReader::Simple->new_multiple(
+		Files => [ "global", "configrc" ], 
+		Keys  => [qw(Foo Bar Baz Quux)]
+		);
 
-   $config->get( "Foo" );
+	my @directives = $config->directives;
+
+	$config->get( "Foo" );
    
    if( $config->exists( "Bar" ) )
    		{
@@ -54,6 +61,8 @@ Each member of the array should contain one valid directive. A directive
 is the name of a key that must occur in the configuration file. If it
 is not found, the module will die. The directive list may contain all
 the keys in the configuration file, a sub set of keys or no keys at all.
+
+The C<new> method is really a wrapper around C<new_multiple>.
 
 =cut
 
