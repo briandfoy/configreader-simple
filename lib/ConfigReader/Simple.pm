@@ -7,7 +7,7 @@ use vars qw($VERSION $AUTOLOAD);
 
 use Carp qw(croak);
 
-$VERSION = "0.91";
+( $VERSION ) = q$Revision$ =~ m/ (\d+ \. \d+) /gx;
 
 my $DEBUG = 0;
 
