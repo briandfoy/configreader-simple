@@ -335,26 +335,28 @@ check that those keys actually occur in the configuration file.
 =cut
 
 
-sub _validate_keys {
-	
-   my $self = shift;
+sub _validate_keys 
+	{
+	my $self = shift;
    
 	if ( $self->{"validkeys"} )
-	{
+		{
 		my ($declared_key);
 		my $declared_keys_ref = $self->{"validkeys"};
-      foreach $declared_key ( @$declared_keys_ref )
-      {
-      	unless ( $self->{"config_data"}{$declared_key} )
-      	{
-         	croak "Config: key '$declared_key' does not occur in file $self->{filename}\n";
-      	}
-         warn "Key: $declared_key found.\n" if $DEBUG;
-      }
-	}
 
-   return 1;
-}
+		foreach $declared_key ( @$declared_keys_ref )
+			{
+			unless ( $self->{"config_data"}{$declared_key} )
+				{
+				croak "Config: key '$declared_key' does not occur in file $self->{filename}\n";
+      			}
+         
+         	warn "Key: $declared_key found.\n" if $DEBUG;
+			}
+		}
+
+	return 1;
+	}
 
 =head1 LIMITATIONS/BUGS
 
