@@ -1,15 +1,20 @@
+# $Id$
 package ConfigReader::Simple;
 use strict;
 
-# $Id$
+use subs qw(_init_errors);
+use vars qw($VERSION $AUTOLOAD $Warn %ERROR $ERROR $Warn $Die);
 
-use vars qw($VERSION $AUTOLOAD);
+use Carp qw(croak carp);
 
-use Carp qw(croak);
-
+$Die   = '';
+$ERROR = '';
 ( $VERSION ) = sprintf "%d.%02d", q$Revision$ =~ m/ (\d+) \. (\d+) /gx;
+$Warn = 0;
 
 my $DEBUG = 0;
+my $Error = '';
+
 
 =head1 NAME
 
@@ -40,11 +45,11 @@ ConfigReader::Simple - Simple configuration file parser
 
 =head1 DESCRIPTION
 
-C<ConfigReader::Simple> reads and parses simple configuration files. It's
+C<ConfigReader::Simple> reads and parses simple configuration files. It is
 designed to be smaller and simpler than the C<ConfigReader> module
 and is more suited to simple configuration files.
 
-=head1 METHODS
+=head2 Methods
 
 =over 4
 
@@ -52,14 +57,18 @@ and is more suited to simple configuration files.
 
 Creates a ConfigReader::Simple object.
 
-C<FILENAME> tells the instance where to look for the configuration
-file.
+C<FILENAME> tells the instance where to look for the
+configuration file. If FILENAME cannot be found, an error
+message for the file is added to the %ERROR hash with the
+FILENAME as a key, and a combined error message appears in
+$ERROR.
 
-C<DIRECTIVES> is an optional argument and is a reference to an array.  
-Each member of the array should contain one valid directive. A directive
-is the name of a key that must occur in the configuration file. If it
-is not found, the module will die. The directive list may contain all
-the keys in the configuration file, a sub set of keys or no keys at all.
+C<DIRECTIVES> is an optional argument and is a reference to
+an array. Each member of the array should contain one valid
+directive. A directive is the name of a key that must occur
+in the configuration file. If it is not found, the method
+croaks. The directive list may contain all the keys in the
+configuration file, a sub set of keys or no keys at all.
 
 The C<new> method is really a wrapper around C<new_multiple>.
 
@@ -93,12 +102,22 @@ may override with more specific ones:
 		Files => [ qw( /etc/config /usr/local/etc/config /home/usr/config ) ],
 		);
 
-This function carps if the values are not array references.
+This function croaks if the values are not array references.
+
+If this method cannot read a file, an error message for that
+file is added to the %ERROR hash with the filename as a key,
+and a combined error message appears in $ERROR.  Processing
+the list of filenames continues if a file cannot be found,
+which may produced undesired results. You can disable this
+feature by setting the $ConfigReader::Simple::Die variable
+to a true value.
 
 =cut
 
 sub new_multiple
 	{
+	_init_errors();
+	
 	my $class    = shift;
 	my %args     = @_;
 
@@ -106,9 +125,9 @@ sub new_multiple
 	
 	$args{'Keys'} = [] unless defined $args{'Keys'};
 	
-	carp( __PACKAGE__ . ': Strings argument must be a array reference')
+	croak( __PACKAGE__ . ': Strings argument must be a array reference')
 		unless UNIVERSAL::isa( $args{'Files'}, 'ARRAY' );
-	carp( __PACKAGE__ . ': Keys argument must be an array reference')
+	croak( __PACKAGE__ . ': Keys argument must be an array reference')
 		unless UNIVERSAL::isa( $args{'Keys'}, 'ARRAY' );
 		
 	$self->{"filenames"} = $args{'Files'};
@@ -118,9 +137,14 @@ sub new_multiple
 	
 	foreach my $file ( @{ $self->{"filenames"} } )
 		{
-		$self->parse( $file );
+		my $result = $self->parse( $file );
+		croak $Error if( not $result and $Die );
+		
+		$ERROR{$file} = $Error unless $result;
 		}
 		
+	$ERROR = join "\n", map { $ERROR{$_} } keys %ERROR;
+	
 	return $self;
 	}
 
@@ -137,12 +161,14 @@ may override with more specific ones:
 		Strings => [ \$global, \$local ],
 		);
 
-This function carps if the values are not array references.
+This function croaks if the values are not array references.
 
 =cut
 
 sub new_string
 	{
+	_init_errors;
+	
 	my $class = shift;
 	my %args  = @_;
 	
@@ -150,9 +176,9 @@ sub new_string
 	
 	$args{'Keys'} = [] unless defined $args{'Keys'};
 
-	carp( __PACKAGE__ . ': Strings argument must be a array reference')
+	croak( __PACKAGE__ . ': Strings argument must be a array reference')
 		unless UNIVERSAL::isa( $args{'Strings'}, 'ARRAY' );
-	carp( __PACKAGE__ . ': Keys argument must be an array reference')
+	croak( __PACKAGE__ . ': Keys argument must be an array reference')
 		unless UNIVERSAL::isa( $args{'Keys'}, 'ARRAY' );
 
 	bless $self, $class;
@@ -178,6 +204,8 @@ will be replaced with the new values found in FILENAME.
 
 sub add_config_file
 	{
+	_init_errors;
+	
 	my $self     = shift;
 	my $filename = shift;
 	
@@ -191,6 +219,8 @@ sub add_config_file
 	
 sub new_from_prototype
 	{
+	_init_errors
+
 	my $self     = shift;
 	my $filename = shift;
 	
@@ -229,7 +259,17 @@ sub parse
 	my $self = shift;
 	my $file = shift;
 	
-	open CONFIG, $file or die "Cannot open file $file: $!";
+	$Error = '';
+	
+	unless( open CONFIG, $file )
+		{
+		$Error = "Could not open configuration file [$file]: $!";
+		
+		carp "Could not open configuration file [$file]: $!" if
+			$Warn;
+			
+		return;
+		}
 	
 	while( <CONFIG> )
 		{
@@ -237,7 +277,7 @@ sub parse
 		next if /^\s*(#|$)/; 
 		
 		my ($key, $value) = &parse_line($_);
-		warn "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
+		carp "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
 		
 		$self->{"config_data"}{$key} = $value;
 		}
@@ -268,7 +308,7 @@ sub parse_string
 		next if $line =~ /^\s*(#|$)/; 
 		
 		my ($key, $value) = &parse_line($line);
-		warn "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
+		carp "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
 		
 		$self->{"config_data"}{$key} = $value;
 		}
@@ -430,13 +470,20 @@ sub parse_line
 	return ($key, $value);
 	}
 
+sub _init_errors
+	{
+	%ERROR = ();
+	$Error = undef;
+	$ERROR = undef;
+	}
+	
+# =item _validate_keys
 
-=item _validate_keys ( )
+# If any keys were declared when the object was constructed,
+# check that those keys actually occur in the configuration file.
+# This function croaks if a declared key does not exist.
 
-If any keys were declared when the object was constructed,
-check that those keys actually occur in the configuration file.
-
-=cut
+# =cut
 
 sub _validate_keys 
 	{
@@ -454,12 +501,35 @@ sub _validate_keys
 				croak "Config: key '$declared_key' does not occur in file $self->{filename}\n";
       			}
          
-         	warn "Key: $declared_key found.\n" if $DEBUG;
+         	carp "Key: $declared_key found.\n" if $DEBUG;
 			}
 		}
 
 	return 1;
 	}
+
+=back
+
+=head2 Package variables
+
+=over 4
+
+=item $Die
+
+If set to a true value, all errors are fatal.
+
+=item $ERROR
+
+The last error message.
+
+=item %ERROR
+
+The error messages from unreadable files.  The key is
+the filename and the value is the error message.
+
+=item $Warn
+
+If set to a true value, methods may output warnings.
 
 =back
 
@@ -480,10 +550,19 @@ keys optional.  Thanks Kim.
 Alan W. Jurgensen <jurgensen@berbee.com> added a change to allow
 the NAME=VALUE format in the configuration file.
 
+=head1 SOURCE AVAILABILITY
+
+This source is part of a SourceForge project which always has the
+latest sources in CVS, as well as all of the previous releases.
+
+	https://sourceforge.net/projects/brian-d-foy/
+	
+If, for some reason, I disappear from the world, one of the other
+members of the project can shepherd this module appropriately.
 
 =head1 AUTHORS
 
-brian d foy, <bdfoy@cpan.org>
+brian d foy, E<lt>bdfoy@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 

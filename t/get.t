@@ -1,6 +1,6 @@
 # $Id$
 
-use Test::More tests => 23;
+use Test::More tests => 26;
 
 use ConfigReader::Simple;
 $loaded = 1;
@@ -59,6 +59,24 @@ $config->add_config_file( "t/global.config" );
 is( $config->get( 'Scope' ), 'Global', 
 	'Scope has right value after global add' );
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # Now try it with multiple files with one missing
+$config = ConfigReader::Simple->new_multiple( 
+	Files => [ qw( t/missing.config t/global.config ) ] );
+isa_ok( $config, 'ConfigReader::Simple' );
+
+# get things that do exist
+is( $config->get( 'Scope' ), 'Global', 
+	'Scope has right value with AUTOLOAD, missing file' );
+
+# config should be undef
+$config = eval {
+	$ConfigReader::Simple::Die = 1;
+	ConfigReader::Simple->new_multiple( 
+		Files => [ qw( t/missing.config t/example.config ) ] );
+	};
+like( $@, qr|\QCould not open configuration file [t/missing.config]| );
+	
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # # # # # Now try it with a string
 my $string = <<'STRING';
