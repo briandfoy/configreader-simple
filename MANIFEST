@@ -1,8 +1,9 @@
+# $Id$
 lib/ConfigReader/Simple.pm
 MANIFEST
 Makefile.PL
 README
-example.pl
-example.config
-test.pl
+eg/example.pl
+t/example.config
+t/01.load.t
 Changes

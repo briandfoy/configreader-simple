@@ -1,3 +1,10 @@
+# $Id$
+
+New in 0.91
+	- you don't need to call parse() since new() does it for you
+	- you can use the NAME=VALUE format in config files thanks to
+		Alan W. Jurgensen <jurgensen@berbee.com>
+	- the module is now maintained by brian d foy <bdfoy@cpan.org>
 
 New in 0.9
    - Bumped up the version number because it's nearly mature

@@ -1,25 +1,13 @@
 package ConfigReader::Simple;
-#
-# Simple interface to a configuration file
-#
-# ObLegalStuff:
-#    Copyright (c) 2000 Bek Oberin. All rights reserved. This program is
-#    free software; you can redistribute it and/or modify it under the
-#    same terms as Perl itself.
-# 
-# Last updated by gossamer on Sat Aug 12 09:06:08 EST 2000
-#
-
 use strict;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-require Exporter;
+# $Id$
 
-@ISA = qw(Exporter);
-@EXPORT = qw();
-@EXPORT_OK = qw();
+use vars qw($VERSION);
 
-$VERSION = "0.9";
+use Carp qw(croak);
+
+$VERSION = "0.91";
 
 my $DEBUG = 0;
 
@@ -33,8 +21,6 @@ ConfigReader::Simple - Simple configuration file parser
 
    $config = ConfigReader::Simple->new("configrc", [qw(Foo Bar Baz Quux)]);
 
-   $config->parse();
-   
    $config->get("Foo");
    
 
@@ -46,9 +32,6 @@ ConfigReader::Simple - Simple configuration file parser
 
 =cut
 
-###################################################################
-# Functions under here are member functions                       #
-###################################################################
 
 =head1 CONSTRUCTOR
 
@@ -79,13 +62,13 @@ sub new {
    $self->{"validkeys"} = $keyref;
 
    bless($self, $class);
+
+	$self->parse();
+
    return $self;
 }
 
 
-#
-# destructor
-#
 sub DESTROY {
    my $self = shift;
 
@@ -96,6 +79,9 @@ sub DESTROY {
 =item parse ()
 
 This does the actual work.  No parameters needed.
+
+This is automatically called from C<new()>, although you can reparse
+the configuration file by calling C<parse()> again.
 
 =cut
 
@@ -145,11 +131,12 @@ sub parse_line {
 
    my ($key, $value);
 
-   if ($text =~ /^\s*(\w+)\s+(['"]?)(.*?)\2\s*$/) {
+	# AWJ: Allow optional '=' or ' = ' between key and value:
+   if ($text =~ /^\s*(\w+)\s*[=]?\s*(['"]?)(.*?)\2\s*$/ ) {
       $key = $1;
       $value = $3;
    } else {
-      die "Config: Can't parse line: $text\n";
+      croak "Config: Can't parse line: $text\n";
    }
 
    return ($key, $value);
@@ -178,7 +165,7 @@ sub _validate_keys {
       {
       	unless ( $self->{"config_data"}{$declared_key} )
       	{
-         	die "Config: key '$declared_key' does not occur in file $self->{filename}\n";
+         	croak "Config: key '$declared_key' does not occur in file $self->{filename}\n";
       	}
          warn "Key: $declared_key found.\n" if $DEBUG;
       }
@@ -196,23 +183,20 @@ Directives are case-sensitive.
 If a directive is repeated, the first instance will silently be
 ignored.
 
-Always die()s on errors instead of reporting them.
-
-C<get()> doesn't warn if used before C<parse()>.
-
-C<get()> doesn't warn if you try to acces the value of an
-unknown directive not know (ie: one that wasn't passed via C<new()>).
-
-All these will be addressed in future releases.
-
 =head1 CREDITS
 
 Kim Ryan <kimaryan@ozemail.com.au> adapted the module to make declaring
 keys optional.  Thanks Kim.
 
+Alan W. Jurgensen <jurgensen@berbee.com> added a change to allow
+the NAME=VALUE format in the configuration file.
+
+
 =head1 AUTHORS
 
 Bek Oberin <gossamer@tertius.net.au>
+
+now maintained by brian d foy <bdfoy@cpan.org>
 
 =head1 COPYRIGHT
 

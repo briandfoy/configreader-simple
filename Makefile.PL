@@ -1,10 +1,4 @@
-#
-# Skeleton Perl Makefile
-#
-# Last updated by gossamer on Wed Sep  2 13:52:39 EST 1998
-#
-
-require 5;
+# $Id$
 use strict;
 
 use ExtUtils::MakeMaker;
