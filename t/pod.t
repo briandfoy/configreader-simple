@@ -1,13 +1,18 @@
 # $Id$
+
 BEGIN {
-	use File::Find::Rule;
-	@files = File::Find::Rule->file()->name( '*.pm' )->in( 'blib/lib' );
-	}
+    @files = qw(
+	lib/ConfigReader/Simple
+    );
+    $nfiles = @files;
+}
 
-use Test::More tests => scalar @files;
-use Test::Pod;
+use Test::More tests => $nfiles;
 
-foreach my $file ( @files )
-	{
-	pod_ok( $file );
-	}
+SKIP: {
+    eval "use Test::Pod;";
+    $bad = ( $@ || ($Test::Pod::VERSION <= '0.95') );
+    skip "Test::Pod 0.95 not installed", $nfiles if $bad;
+    pod_file_ok('blib/$_') for @files;
+}
+
