@@ -1,3 +1,7 @@
+.lwpcookies
+blibdirs.ts
+lib/ConfigReader/Simple.pm.bak
+Changes.bak
 .cvsignore
 .releaserc
 .DS_Store
@@ -9,3 +13,5 @@ MANIFEST.SKIP
 MANIFEST.bak
 pm_to_blib
 Makefile$
+.*\.bak
+.*\.old

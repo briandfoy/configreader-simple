@@ -1,8 +1,12 @@
 Changes
-MANIFEST			This list of files
-Makefile.PL
+eg/config.desc
+eg/config_creator.pl
 eg/example.pl
 lib/ConfigReader/Simple.pm
+Makefile.PL
+MANIFEST
+META.yml
+t/clone.config
 t/clone.t
 t/example.config
 t/exists.t
@@ -10,9 +14,11 @@ t/get.t
 t/global.config
 t/load.t
 t/pod.t
+t/pod_coverage.t
 t/remove.t
-t/set.t
 t/save.t
+t/save_test.config
+t/save_test1.config
+t/save_test2.config
+t/set.t
 t/test_manifest
-META.yml                                 Module meta-data (added by MakeMaker)
-t/clone.config
