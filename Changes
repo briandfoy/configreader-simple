@@ -1,5 +1,9 @@
 # $Id$
 
+1.21 - Wed Aug 24 18:37:34 2005
+	* Fixed string parsing bug which messed up on continuation lines
+	* cloning an object now makes a deep copy, fixing another bug
+
 1.18 - Tue Feb 10 20:46:05 2004
 * Adam Trickett added support for continuation lines
 * I added docs for config file formats
