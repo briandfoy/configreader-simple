@@ -1,6 +1,6 @@
 # $Id$
 
-use Test::More tests => 30;
+use Test::More tests => 34;
 
 use ConfigReader::Simple;
 
@@ -86,6 +86,7 @@ like( $@, qr|\QCould not open configuration file [t/missing.config]| );
 	
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # # # # # Now try it with a string
+{
 my $string = <<'STRING';
 TestA Lear
 TestB MacBeth
@@ -102,5 +103,26 @@ is( $config->get( 'TestB' ), 'MacBeth',
 	'TestB has right value (from string)' );
 is( $config->get( 'TestC' ), 'Richard', 
 	'TestC has right value (from string)' );
+}
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # Now try it with a string with a continuation line
+{
+my $string = <<'STRING';
+TestA King \
+Lear
+TestB MacBeth
+TestC Richard
+STRING
 
+$config = ConfigReader::Simple->new_string(
+	Strings => [ \$string ] );
+isa_ok( $config, 'ConfigReader::Simple' );
+
+is( $config->get( 'TestA' ), 'King Lear', 
+	'TestA has right value (from string)' );
+is( $config->get( 'TestB' ), 'MacBeth', 
+	'TestB has right value (from string)' );
+is( $config->get( 'TestC' ), 'Richard', 
+	'TestC has right value (from string)' );
+}

@@ -301,13 +301,30 @@ sub add_config_file
 	
 	return 1;
 	}
-	
+
+=item files
+
+Return the list of configuration files associated with this 
+object. The order of the return values is the order of parsing,
+so the first value is the first file parsed (and subsequent files may
+mask it).
+
+=cut
+
+sub files { @{ $_[0]->{"filenames"} } }
+
+=item new_from_prototype( 
+
+Create a clone object. This is the same thing as calling
+clone().
+
+=cut
+
 sub new_from_prototype
 	{
-	_init_errors
+	_init_errors;
 
 	my $self     = shift;
-	my $filename = shift;
 	
 	my $clone = $self->clone;
 	
@@ -383,7 +400,7 @@ sub parse
 	return 1;
 	}
 
-=item parse_from_string( SCALAR_REF )
+=item parse_string( SCALAR_REF )
 
 Parses the string inside the reference SCALAR_REF just as if
 it found it in a file.
@@ -396,13 +413,32 @@ sub parse_string
 	my $string = shift;
 	
 	my @lines = split /\r?\n/, $$string;
+	chomp( @lines );
+	carp "A: Found " . @lines . " lines" if $DEBUG;
 	
-	foreach my $line ( @lines )
+	while( my $line = shift @lines )
 		{
-		next if $line =~ /^\s*(#|$)/; 
+		carp "1: Line is $line" if $DEBUG;
+
+		CONT: {
+		if ( $line =~ s/\\ \s* $//x )
+			{
+			carp "a: reading continuation line $lines[0]" if $DEBUG;
+			$line .= shift @lines;
+			carp "b: Line is $line" if $DEBUG;
+			redo CONT unless @lines == 0;
+			}
+		}
+
+		carp "2: Line is $line" if $DEBUG;
 		
-		my ($key, $value) = &parse_line($line);
-		carp "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
+		chomp $line;
+		next if $line =~ /^\s*(#|$)/; 
+
+		carp "3: Line is $line" if $DEBUG;
+				
+		my ($key, $value) = &parse_line( $line );
+		carp "Key:  '$key'   Value:  '$value'" if $DEBUG;
 		
 		$self->{"config_data"}{$key} = $value;
 		}

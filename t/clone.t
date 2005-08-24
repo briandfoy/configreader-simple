@@ -1,6 +1,6 @@
 # $Id$
 
-use Test::More tests => 6;
+use Test::More tests => 14;
 
 use ConfigReader::Simple;
 
@@ -32,4 +32,24 @@ is( $config->Test2, $Test2_value,
 	'Original object has right value after change' );
 isnt( $clone->Test2, $Test2_value,
 	'Clone object has right value after original change' );
+
+my @files       = $config->files;
+my @clone_files = $clone->files;
+
+is( scalar @files, 1, "Original object has 1 associated file" );
+is( scalar @clone_files, 1, "Clone object has 1 associated file" );
+is( $files[-1], "t/example.config", "Original object returns right file" );
+is( $clone_files[-1], "t/example.config", "Clone object returns right file" ); 
+
+$config->add_config_file( 't/clone.config' );
+
+@files       = $config->files;
+@clone_files = $clone->files;
+
+is( scalar @files, 2, "Original object has 1 associated file" );
+is( scalar @clone_files, 1, "Clone object has 1 associated file" );
+is( $files[-1], "t/clone.config", "Original object returns right file" );
+is( $clone_files[-1], "t/example.config", "Clone object returns right file" ); 
+
+
 }
