@@ -68,7 +68,7 @@ ConfigReader::Simple - Simple configuration file parser
 
 C<ConfigReader::Simple> reads and parses simple configuration files. It is
 designed to be smaller and simpler than the C<ConfigReader> module
-and is more suited to simple configuration files.
+and is more suited to simple configuration files. 
 
 =head2 The configuration file format
 
