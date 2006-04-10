@@ -1,5 +1,13 @@
 # $Id$
 
+1.23 - Mon Apr 10 09:30:54 2006
+	* Changed configuration directive parsing to accept [^\s=]+ instead of
+	just \w+ 
+	* If you want to name your configuration directives with characters
+	outside of \w, you should upgrade to this version
+	* If your teammates are using config directives with characters
+	outside of \w, they're going to make you upgrade. :)  
+
 1.21 - Wed Aug 24 18:37:34 2005
 	* Fixed string parsing bug which messed up on continuation lines
 	* cloning an object now makes a deep copy, fixing another bug
