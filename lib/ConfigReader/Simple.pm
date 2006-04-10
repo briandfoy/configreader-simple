@@ -717,7 +717,7 @@ sub parse_line
 	my ($key, $value);
 	
 	# AWJ: Allow optional '=' or ' = ' between key and value:
-	if ($text =~ /^\s*(\w+)\s*[=]?\s*(['"]?)(.*?)\2\s*$/ ) 
+	if ($text =~ /^\s*([^\s=]+)\s*[=]?\s*(['"]?)(.*?)\2\s*$/ ) 
 		{
 		( $key, $value ) = ( $1, $3 );
 		} 
