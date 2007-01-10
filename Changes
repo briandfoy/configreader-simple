@@ -1,5 +1,9 @@
 # $Id$
 
+1.24 - Tue Jan  9 22:02:27 2007
+	* updated copyright and license info
+	* no code changes, so no need to upgrade
+
 1.23 - Mon Apr 10 09:30:54 2006
 	* Changed configuration directive parsing to accept [^\s=]+ instead of
 	just \w+ 
