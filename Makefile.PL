@@ -8,6 +8,7 @@ eval "use Test::Manifest 1.14";
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
     'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
+	'LICENSE'       => 'perl',
 
     'PREREQ_PM'	    => {
 		'Test::More'       => '0',
