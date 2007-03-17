@@ -1,5 +1,9 @@
 # $Id$
 
+1.25 - Fri Mar 16 18:09:27 2007
+	* Fixing up distro and verifying that all bugs in RT are fixed
+	* A call to new() without args now doesn't try to open the null file
+
 1.24 - Tue Jan  9 22:02:27 2007
 	* updated copyright and license info
 	* no code changes, so no need to upgrade
