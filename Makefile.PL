@@ -9,7 +9,8 @@ WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
     'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
 	'LICENSE'       => 'perl',
-
+	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
+	
     'PREREQ_PM'	    => {
 		'Test::More'       => '0',
 		'Test::Warn'       => '0',

@@ -7,7 +7,6 @@ lib/ConfigReader/Simple.pm
 LICENSE
 Makefile.PL
 MANIFEST
-META.yml
 README
 t/clone.config
 t/clone.t
@@ -16,12 +15,10 @@ t/exists.t
 t/get.t
 t/global.config
 t/load.t
+t/parse_string.t
 t/pod.t
 t/pod_coverage.t
 t/remove.t
 t/save.t
-t/save_test.config
-t/save_test1.config
-t/save_test2.config
 t/set.t
 t/test_manifest

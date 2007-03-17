@@ -1,8 +1,9 @@
 load.t
 pod.t
 pod_coverage.t
-prereq.t
+#prereq.t
 get.t
+parse_string.t
 set.t
 remove.t
 exists.t

@@ -62,7 +62,4 @@ my $result = eval { $config->save(
 ok( $result, 'Four arguments return true' );
 }
 
-
-
-
-#unlink $File;
+unlink @Files;
