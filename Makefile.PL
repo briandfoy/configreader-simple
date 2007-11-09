@@ -9,7 +9,7 @@ eval "use Test::Manifest 1.14";
 	
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
-    'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
+    'VERSION_FROM'  => 'lib/Simple.pm',
 	'ABSTRACT'      => 'Simple configuration file parser',
 
 	'LICENSE'       => 'perl',
@@ -18,9 +18,13 @@ WriteMakefile(
     'PREREQ_PM'	    => {
 		'Test::Warn'       => '0',
 		},
+
+	'PM'           => {
+		'lib/Simple.pm'         => '$(INST_LIBDIR)/Simple.pm',
+		},
 		                      
 	'MAN3PODS' => {
-		'lib/ConfigReader/Simple.pm' => 
+		'lib/Simple.pm' => 
 			'$(INST_MAN3DIR)/ConfigReader::Simple.3',
 		},
 

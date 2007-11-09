@@ -3,7 +3,7 @@ eg/config.desc
 eg/config_creator.pl
 eg/example.pl
 examples/README
-lib/ConfigReader/Simple.pm
+lib/Simple.pm
 LICENSE
 Makefile.PL
 MANIFEST
