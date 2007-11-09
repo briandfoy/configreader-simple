@@ -1,6 +1,8 @@
 # $Id$
 use strict;
 
+require 5.006;
+
 use ExtUtils::MakeMaker;
 
 eval "use Test::Manifest 1.14";
@@ -8,11 +10,12 @@ eval "use Test::Manifest 1.14";
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
     'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
+	'ABSTRACT'      => 'Simple configuration file parser',
+
 	'LICENSE'       => 'perl',
 	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
 	
     'PREREQ_PM'	    => {
-		'Test::More'       => '0',
 		'Test::Warn'       => '0',
 		},
 		                      

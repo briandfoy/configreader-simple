@@ -10,7 +10,7 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = 1.25;
+( $VERSION ) = 1.26;
 #= sprintf "%d.%02d", q$Revision$ =~ m/ (\d+) \. (\d+) /gx;
 $Warn = 0;
 
