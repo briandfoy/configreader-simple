@@ -1,5 +1,9 @@
 # $Id$
 
+1.26 - Fri Nov  9 05:33:07 2007
+	* cleanups for the move from CVS to SVN, and for the latest kwalitee
+	* no need to upgrade
+
 1.25 - Fri Mar 16 18:09:27 2007
 	* Fixing up distro and verifying that all bugs in RT are fixed
 	* A call to new() without args now doesn't try to open the null file
