@@ -1,5 +1,11 @@
 # $Id$
 
+1.27 - Wed Aug 20 12:33:43 2008
+	* Fixed bug in _validate_keys that looked at a directives
+	value instead of checking for the directive name. This 
+	affected directives with perly false values when you 
+	gave a list of required keys to new().
+
 1.26 - Fri Nov  9 05:33:07 2007
 	* cleanups for the move from CVS to SVN, and for the latest kwalitee
 	* no need to upgrade
