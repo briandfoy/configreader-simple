@@ -1,6 +1,8 @@
 # $Id$
 package ConfigReader::Simple;
 use strict;
+use warnings;
+no warnings;
 
 use subs qw(_init_errors);
 use vars qw($VERSION $AUTOLOAD %ERROR $ERROR $Warn $Die);
