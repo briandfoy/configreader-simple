@@ -10,8 +10,7 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = 1.26;
-#= sprintf "%d.%02d", q$Revision$ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = 1.27;
 $Warn = 0;
 
 our $DEBUG = 0;
@@ -757,7 +756,7 @@ sub _validate_keys
 
 		foreach $declared_key ( @$declared_keys_ref )
 			{
-			unless ( $self->{"config_data"}{$declared_key} )
+			unless ( exists $self->{"config_data"}{$declared_key} )
 				{
 				croak "Config: key '$declared_key' does not occur in file $self->{filename}\n";
       			}
