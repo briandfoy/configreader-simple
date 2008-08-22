@@ -1,12 +1,22 @@
-# $Id$
+#!/usr/bin/perl
+use strict;
+use warnings;
 
-use Test::More tests => 34;
+use Test::More 'no_plan';
 
-use ConfigReader::Simple;
+use File::Spec::Functions qw(catfile);
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+my $class  = 'ConfigReader::Simple';
+my $method = 'get';
+
+use_ok( $class );
+can_ok( $class, $method );
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 my @Directives = qw( Test1 Test2 Test3 Test4 );
-my $config = ConfigReader::Simple->new( "t/example.config", \@Directives );
-isa_ok( $config, 'ConfigReader::Simple' );
+my $config = $class->new( "t/example.config", \@Directives );
+isa_ok( $config, $class );
 
 # get things that do exist
 is( $config->get( 'Test3' ), 'foo', 'Test3 has right value' );
@@ -36,55 +46,60 @@ ok( $value, 'Test5 has no value with get()' );
 $value = not defined $config->Test5;
 ok( $value, 'Test5 has no value with AUTOLOAD' );
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # Now try it with multiple files
-$config = ConfigReader::Simple->new_multiple( 
+$config = $class->new_multiple(
 	Files => [ qw( t/global.config t/example.config ) ] );
-isa_ok( $config, 'ConfigReader::Simple' );
+isa_ok( $config, $class );
 
 # get things that do exist
-is( $config->get( 'Test3' ), 'foo', 
+is( $config->get( 'Test3' ), 'foo',
 	'Test3 has right value with AUTOLOAD' );
-is( $config->get( 'Scope' ), 'Global', 
+is( $config->get( 'Scope' ), 'Global',
 	'Scope has right value with AUTOLOAD' );
-is( $config->get( 'Test2' ), 'Test 2 value', 
+is( $config->get( 'Test2' ), 'Test 2 value',
 	'Test2 has right value with AUTOLOAD' );
 is( $config->get( 'Test10'), 'foo bar baz',
        'Test10 has right value with AUTOLOAD' );
 
 # try it one at a time
-$config = ConfigReader::Simple->new( "t/example.config" );
+{
+my $config = $class->new( "t/example.config" );
 
-is( $config->get( 'Test3' ), 'foo', 
+is( $config->get( 'Test3' ), 'foo',
 	'Test3 has right value with get(), before global' );
 is( $config->get( 'Test2' ), 'Test 2 value',
 	'Test2 has right value with get(), before global' );
 is( $config->get( 'Test10' ), 'foo bar baz',
        'Test10 has right value with get), before global' );
 
-$config->add_config_file( "t/global.config" );
-is( $config->get( 'Scope' ), 'Global', 
-	'Scope has right value after global add' );
+my $global = catfile( qw( t global.config ) );
+ok( -e $global, "$global exists" );
+ok( $config->add_config_file( $global), "Added $global" );
+is( $config->get( 'Scope' ), 'Global',
+	"Scope has right value after adding $global" );
+}
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # Now try it with multiple files with one missing
-$config = ConfigReader::Simple->new_multiple( 
+$config = $class->new_multiple(
 	Files => [ qw( t/missing.config t/global.config ) ] );
-isa_ok( $config, 'ConfigReader::Simple' );
+isa_ok( $config, $class );
 
 # get things that do exist
-is( $config->get( 'Scope' ), 'Global', 
+is( $config->get( 'Scope' ), 'Global',
 	'Scope has right value with AUTOLOAD, missing file' );
 
 # config should be undef
 $config = eval {
-	$ConfigReader::Simple::Die = 1;
-	ConfigReader::Simple->new_multiple( 
+	no strict 'refs';
+	${ "${class}::Die" } = 1;
+	$class->new_multiple(
 		Files => [ qw( t/missing.config t/example.config ) ] );
 	};
 like( $@, qr|\QCould not open configuration file [t/missing.config]| );
-	
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # Now try it with a string
 {
 my $string = <<'STRING';
@@ -93,19 +108,19 @@ TestB MacBeth
 TestC Richard
 STRING
 
-$config = ConfigReader::Simple->new_string(
+$config = $class->new_string(
 	Strings => [ \$string ] );
-isa_ok( $config, 'ConfigReader::Simple' );
+isa_ok( $config, $class );
 
-is( $config->get( 'TestA' ), 'Lear', 
+is( $config->get( 'TestA' ), 'Lear',
 	'TestA has right value (from string)' );
-is( $config->get( 'TestB' ), 'MacBeth', 
+is( $config->get( 'TestB' ), 'MacBeth',
 	'TestB has right value (from string)' );
-is( $config->get( 'TestC' ), 'Richard', 
+is( $config->get( 'TestC' ), 'Richard',
 	'TestC has right value (from string)' );
 }
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # Now try it with a string with a continuation line
 {
 my $string = <<'STRING';
@@ -115,14 +130,14 @@ TestB MacBeth
 TestC Richard
 STRING
 
-$config = ConfigReader::Simple->new_string(
+$config = $class->new_string(
 	Strings => [ \$string ] );
-isa_ok( $config, 'ConfigReader::Simple' );
+isa_ok( $config, $class );
 
-is( $config->get( 'TestA' ), 'King Lear', 
+is( $config->get( 'TestA' ), 'King Lear',
 	'TestA has right value (from string)' );
-is( $config->get( 'TestB' ), 'MacBeth', 
+is( $config->get( 'TestB' ), 'MacBeth',
 	'TestB has right value (from string)' );
-is( $config->get( 'TestC' ), 'Richard', 
+is( $config->get( 'TestC' ), 'Richard',
 	'TestC has right value (from string)' );
 }

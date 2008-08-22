@@ -11,12 +11,12 @@ WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
     'VERSION_FROM'  => 'lib/Simple.pm',
 	'ABSTRACT'      => 'Simple configuration file parser',
-
 	'LICENSE'       => 'perl',
 	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
 	
     'PREREQ_PM'	    => {
 		'Test::Warn'       => '0',
+		'Test::Output'     => '0',
 		},
 
 	'PM'           => {

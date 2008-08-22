@@ -15,5 +15,5 @@ else
 		{
 		trustme => [ qr/^[A-Z_]+$/, qr/parse_line/ ]
 		}
-		);      
+		);
 	}
