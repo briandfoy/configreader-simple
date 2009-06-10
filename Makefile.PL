@@ -31,7 +31,7 @@ WriteMakefile(
 			resources => {
 		  		repository => 'git://github.com/briandfoy/test-output.git',
 				},
-			keywords => ['testing','STDOUT','STDERR'],
+			keywords => ['config'],
 	  		},
 	 	) 
 	 	: 
