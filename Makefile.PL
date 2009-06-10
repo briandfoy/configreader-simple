@@ -1,11 +1,10 @@
-# $Id$
-use strict;
+use 5.006;
 
-require 5.006;
+use strict;
 
 use ExtUtils::MakeMaker;
 
-eval "use Test::Manifest 1.14";
+eval "use Test::Manifest 1.21";
 	
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
@@ -22,10 +21,26 @@ WriteMakefile(
 	'PM'           => {
 		'lib/Simple.pm'         => '$(INST_LIBDIR)/Simple.pm',
 		},
+
+	(
+	$ExtUtils::MakeMaker::VERSION ge '6.48' ? 
+		(
+		MIN_PERL_VERSION => 5.006,
+
+		META_MERGE       => {
+			resources => {
+		  		repository => 'git://github.com/briandfoy/test-output.git',
+				},
+			keywords => ['testing','STDOUT','STDERR'],
+	  		},
+	 	) 
+	 	: 
+	 	()
+	 ),
 		                      
 	'MAN3PODS' => {
 		'lib/Simple.pm' => 
-			'$(INST_MAN3DIR)/ConfigReader::Simple.3',
+			'$(INST_MAN3DIR)/ConfigReader::Simple.$(MAN3EXT)',
 		},
 
     clean  => { FILES => "ConfigReader-Simple-*" },

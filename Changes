@@ -1,4 +1,4 @@
-# $Id$
+Changes for ConfigReader::Simple
 
 1.27 - Wed Aug 20 12:33:43 2008
 	* Fixed bug in _validate_keys that looked at a directives
@@ -30,58 +30,58 @@
 	* Fixed string parsing bug which messed up on continuation lines
 	* cloning an object now makes a deep copy, fixing another bug
 
-1.18 - Tue Feb 10 20:46:05 2004
-* Adam Trickett added support for continuation lines
-* I added docs for config file formats
+1.20
+	* Removed all module dependencies except Test::More
+
+1.18 * Tue Feb 10 20:46:05 2004
+	* Adam Trickett added support for continuation lines
+	* I added docs for config file formats
 
 1.17 - Sun Nov 30 11:12:50 2003
 	+ some fix ups for the POD docs
 	+ fixed a problem in t/pod.t so the test finds the files
 	+ if you already have this installed, you don't need this update
 
-New in 1.20
-	- Removed all module dependencies except Test::More
 
-New in 1.15
-	- new_multiple can keep going if it cannot read a file
-	- added $Die, $Warn, $ERROR, %Error variables for settings
-	- things that should croak do
+1.15 - 22-Oct-2002
+	* new_multiple can keep going if it cannot read a file
+	* added $Die, $Warn, $ERROR, %Error variables for settings
+	* things that should croak do
 
-New in 1.14
-	- cleaned up Makefile.PL
-	- added prereq test
+1.14 - 29-Sep-2002 23:51
+	* cleaned up Makefile.PL
+	* added prereq test
 
-New in 1.12
-	_ added add_config_file() to pull in more configuration directives
+1.12 - 13-Jul-2002 21:13
+	* added add_config_file() to pull in more configuration directives
 	after you have already created the object.
 	
-New in 1.11
-	- added new_multiple() to parse multiple files into the same
+1.11 - 28-Apr-2002 11:11
+	* added new_multiple() to parse multiple files into the same
 	object.
 	
-New in 0.91
-	- you don't need to call parse() since new() does it for you
-	- you can use the NAME=VALUE format in config files thanks to
+0.91
+	* you don't need to call parse() since new() does it for you
+	* you can use the NAME=VALUE format in config files thanks to
 		Alan W. Jurgensen <jurgensen@berbee.com>
-	- the module is now maintained by brian d foy <bdfoy@cpan.org>
+	* the module is now maintained by brian d foy <bdfoy@cpan.org>
 
-New in 0.9
-   - Bumped up the version number because it's nearly mature
-   - Now you can declare all, some or no keys and it will only die if a
+0.9
+   * Bumped up the version number because it's nearly mature
+   * Now you can declare all, some or no keys and it will only die if a
      declared key is not found in the config file. 
      (Kim Ryan <kimaryan@ozemail.com.au>)
 
-New in 0.5
-   - Changed module name to ConfigReader::Simple to match up with
+0.5
+   * Changed module name to ConfigReader::Simple to match up with
      other modules in CPAN better.
 
-New in 0.4
-   - Quote-delimiters now have to be matched, ie not 'foo" etc.
+0.4
+   * Quote*delimiters now have to be matched, ie not 'foo" etc.
 
-New in 0.3
-   - Doesn't get confused by trailing whitespace
-
-   - Copes with quote-delimited strings as long as they're all on the
+0.3
+   * Doesn't get confused by trailing whitespace
+   * Copes with quote-delimited strings as long as they're all on the
    same line.
 
 

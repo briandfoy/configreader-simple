@@ -1,5 +1,3 @@
-# $Id$
-
 use Test::More tests => 22;
 use Test::Warn;
 

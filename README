@@ -1,5 +1,3 @@
-$Id$
-
 You can install this using in the usual Perl fashion
 
 	perl Makefile.PL
@@ -17,10 +15,9 @@ perldoc directly on the module file.
 
 	perldoc lib/ConfigReader/Simple.pm
 	
-This module is also in CVS on SourceForge
+This module is also in Github
 
-	http://sourceforge.net/projects/brian-d-foy/
-
+	http://github.com/briandfoy/ConfigReader-Simple/tree/master
 
 Enjoy, 
 

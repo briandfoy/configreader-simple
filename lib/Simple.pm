@@ -1,4 +1,3 @@
-# $Id$
 package ConfigReader::Simple;
 use strict;
 use warnings;
@@ -12,7 +11,7 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = 1.28;
+$VERSION = '1.28';
 $Warn = 0;
 
 our $DEBUG = 0;
@@ -106,7 +105,7 @@ is "Live from Peru"
 
 	Llama Live from Peru
 
-This is the same, to ConfigReader::Simple, as the following
+This is the same, to C<ConfigReader::Simple>, as the following
 which has more whitespace between the directive and the value.
 
 	Llama     Live from Peru
@@ -133,7 +132,7 @@ line. These three entries are the same:
 	Peru
 
 If a line is only whitespace, or the first whitespace character is
-a #, the Perl comment character, ConfigReader::Simple ignores the
+a #, the Perl comment character, C<ConfigReader::Simple> ignores the
 line unless it is the continuation of the previous line.
 
 =head2 Methods
@@ -142,7 +141,7 @@ line unless it is the continuation of the previous line.
 
 =item new ( FILENAME, DIRECTIVES )
 
-Creates a ConfigReader::Simple object.
+Creates a C<ConfigReader::Simple> object.
 
 C<FILENAME> tells the instance where to look for the
 configuration file. If FILENAME cannot be found, an error
@@ -192,11 +191,11 @@ may override with more specific ones:
 This function croaks if the values are not array references.
 
 If this method cannot read a file, an error message for that
-file is added to the %ERROR hash with the filename as a key,
-and a combined error message appears in $ERROR.  Processing
+file is added to the C<%ERROR> hash with the filename as a key,
+and a combined error message appears in C<$ERROR>.  Processing
 the list of filenames continues if a file cannot be found,
 which may produced undesired results. You can disable this
-feature by setting the $ConfigReader::Simple::Die variable
+feature by setting the C<$ConfigReader::Simple::Die> variable
 to a true value.
 
 =cut
@@ -698,7 +697,7 @@ sub _save
 	return SUCCESS;
 	}
 
-# Internal methods
+=begin private
 
 =item parse_line( STRING )
 
@@ -706,7 +705,10 @@ Internal method. Don't call this directly.
 
 Takes a line of text and turns it into the directive and value.
 
+=end private
+
 =cut
+
 
 sub parse_line
 	{
@@ -739,13 +741,17 @@ sub _init_errors
 	$ERROR = undef;
 	}
 
-# =item _validate_keys
+=begin private
 
-# If any keys were declared when the object was constructed,
-# check that those keys actually occur in the configuration file.
-# This function croaks if a declared key does not exist.
+=item _validate_keys
 
-# =cut
+If any keys were declared when the object was constructed,
+check that those keys actually occur in the configuration file.
+This function croaks if a declared key does not exist.
+
+=end private
+
+=cut
 
 sub _validate_keys
 	{
@@ -817,13 +823,9 @@ Greg White has been a very patient user and tester.
 
 =head1 SOURCE AVAILABILITY
 
-This source is part of a SourceForge project which always has the
-latest sources in SVN, as well as all of the previous releases.
+The source is in Github:
 
-	http://sourceforge.net/projects/brian-d-foy/
-
-If, for some reason, I disappear from the world, one of the other
-members of the project can shepherd this module appropriately.
+ http://github.com/briandfoy/ConfigReader-Simple/tree/master
 
 =head1 AUTHORS
 
@@ -831,7 +833,7 @@ brian d foy, C<< <bdfoy@cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2008 brian d foy.  All rights reserved.
+Copyright (c) 2002-2009 brian d foy.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

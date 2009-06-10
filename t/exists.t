@@ -1,5 +1,3 @@
-# $Id$
-
 use Test::More tests => 20;
 
 use File::Spec::Functions qw(catfile);
