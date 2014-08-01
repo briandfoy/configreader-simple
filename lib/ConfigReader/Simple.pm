@@ -8,20 +8,20 @@ use vars qw($VERSION $AUTOLOAD %ERROR $ERROR $Warn $Die);
 
 use Carp qw(croak carp);
 
-$Die   = '';
-$ERROR = '';
-$VERSION = '1.29';
-$Warn = 0;
+$ERROR     = '';
+$VERSION   = '1.29';
+$Warn      = 0;
+$Die       = '';
 
 our $DEBUG = 0;
-my $Error = '';
+my $Error  = '';
 
 sub SUCCESS() { 1 };
 sub FAILURE() { 0 };
 
 =head1 NAME
 
-ConfigReader::Simple - Simple configuration file parser
+ConfigReader::Simple - A simple line-oriented configuration file parser
 
 =head1 SYNOPSIS
 
@@ -40,8 +40,7 @@ ConfigReader::Simple - Simple configuration file parser
 
 	$config->get( "Foo" );
 
-	if( $config->exists( "Bar" ) )
-   		{
+	if( $config->exists( "Bar" ) ) {
    		print "Bar was in the config file\n";
    		}
 
@@ -66,9 +65,9 @@ ConfigReader::Simple - Simple configuration file parser
 
 =head1 DESCRIPTION
 
-C<ConfigReader::Simple> reads and parses simple configuration files. It is
-designed to be smaller and simpler than the C<ConfigReader> module
-and is more suited to simple configuration files.
+C<ConfigReader::Simple> reads and parses simple configuration files.
+It is designed to be smaller and simpler than the C<ConfigReader>
+module and is more suited to simple configuration files.
 
 =head2 The configuration file format
 
@@ -159,8 +158,7 @@ The C<new> method is really a wrapper around C<new_multiple>.
 
 =cut
 
-sub new
-	{
+sub new {
 	my $class    = shift;
 	my $filename = shift;
 	my $keyref   = shift;
@@ -169,7 +167,8 @@ sub new
 
 	my $self = $class->new_multiple(
 		Files => [ defined $filename ? $filename : () ],
-		Keys  => $keyref );
+		Keys  => $keyref
+		);
 
 	return $self;
 	}
@@ -199,8 +198,7 @@ to a true value.
 
 =cut
 
-sub new_multiple
-	{
+sub new_multiple {
 	_init_errors();
 
 	my $class    = shift;
@@ -220,8 +218,7 @@ sub new_multiple
 
 	bless $self, $class;
 
-	foreach my $file ( @{ $self->{"filenames"} } )
-		{
+	foreach my $file ( @{ $self->{"filenames"} } ) {
 		my $result = $self->parse( $file );
 		croak $Error if( not $result and $Die );
 
@@ -250,8 +247,7 @@ This function croaks if the values are not array references.
 
 =cut
 
-sub new_string
-	{
+sub new_string {
 	_init_errors;
 
 	my $class = shift;
@@ -271,8 +267,7 @@ sub new_string
 	$self->{"strings"}   = $args{'Strings'};
 	$self->{"validkeys"} = $args{'Keys'};
 
-	foreach my $string_ref ( @{ $self->{"strings"} } )
-		{
+	foreach my $string_ref ( @{ $self->{"strings"} } ) {
 		croak( __PACKAGE__ . ': Element of Strings is not a scalar reference' )
 			unless ref $string_ref eq ref \ '';
 		$self->parse_string( $string_ref );
@@ -289,8 +284,7 @@ will be replaced with the new values found in FILENAME.
 
 =cut
 
-sub add_config_file
-	{
+sub add_config_file {
 	_init_errors;
 
 	my( $self, $filename ) = @_;
@@ -320,8 +314,7 @@ clone().
 
 =cut
 
-sub new_from_prototype
-	{
+sub new_from_prototype {
 	_init_errors;
 
 	my $self     = shift;
@@ -331,8 +324,7 @@ sub new_from_prototype
 	return $clone;
 	}
 
-sub AUTOLOAD
-	{
+sub AUTOLOAD {
 	my $self = shift;
 
 	my $method = $AUTOLOAD;
@@ -342,8 +334,7 @@ sub AUTOLOAD
 	$self->get( $method );
 	}
 
-sub DESTROY
-	{
+sub DESTROY {
 	return 1;
 	}
 
@@ -356,14 +347,12 @@ the configuration file by calling C<parse()> again.
 
 =cut
 
-sub parse
-	{
+sub parse {
 	my( $self, $file ) = @_;
 
 	$Error = '';
 
-	unless( open CONFIG, $file )
-		{
+	unless( open CONFIG, $file ) {
 		$Error = "Could not open configuration file [$file]: $!";
 		carp $Error if $Warn;
 		return;
@@ -371,10 +360,8 @@ sub parse
 
 	$self->{"file_fields"}{$file} = [];
 
-	while( <CONFIG> )
-		{
-		if ( s/\\ \s* $//x )
-			{
+	while( <CONFIG> ) {
+		if ( s/\\ \s* $//x ) {
 			$_ .= <CONFIG>;
 			redo unless eof CONFIG;
 			}
@@ -403,8 +390,7 @@ it found it in a file.
 
 =cut
 
-sub parse_string
-	{
+sub parse_string {
 	my $self   = shift;
 	my $string = shift;
 
@@ -412,13 +398,11 @@ sub parse_string
 	chomp( @lines );
 #	carp "A: Found " . @lines . " lines" if $DEBUG;
 
-	while( my $line = shift @lines )
-		{
+	while( my $line = shift @lines ) {
 #		carp "1: Line is $line" if $DEBUG;
 
 		CONT: {
-		if ( $line =~ s/\\ \s* $//x )
-			{
+		if ( $line =~ s/\\ \s* $//x ) {
 #			carp "a: reading continuation line $lines[0]" if $DEBUG;
 			$line .= shift @lines;
 #			carp "b: Line is $line" if $DEBUG;
@@ -466,24 +450,20 @@ and returns false.
 
 =cut
 
-sub set
-	{
+sub set {
 	my $self = shift;
 	my( $key, $value ) = @_;
 
-	if( ref $value )
-		{
+	if( ref $value ) {
 		$ERROR = "Second argument to set must be a simple scalar";
-		if( $Warn )
-			{
+		if( $Warn ) {
 			carp $ERROR;
 			return;
 			}
-		elsif( $Die )
-			{
+		elsif( $Die ) {
 			croak $ERROR;
 			}
-			
+
 		return;
 		}
 
@@ -499,8 +479,7 @@ exist, and TRUE otherwise.
 
 =cut
 
-sub unset
-	{
+sub unset {
 	my $self = shift;
 	my $key  = shift;
 
@@ -518,8 +497,7 @@ and FALSE otherwise.
 
 =cut
 
-sub remove
-	{
+sub remove {
 	my $self = shift;
 	my $key  = shift;
 
@@ -537,8 +515,7 @@ file. The keys are sorted ASCII-betically.
 
 =cut
 
-sub directives
-	{
+sub directives {
 	my $self = shift;
 
 	my @keys = sort keys %{ $self->{"config_data"} };
@@ -553,8 +530,7 @@ otherwise.
 
 =cut
 
-sub exists
-	{
+sub exists {
 	my $self = shift;
 	my $name = shift;
 
@@ -576,8 +552,7 @@ without affecting the old one.
 # might have a reference value, but that reference value
 # will be "flat", so it won't have references in it.
 
-sub clone
-	{
+sub clone {
 	my $self = shift;
 
 	my $clone = bless {}, ref $self;
@@ -585,14 +560,12 @@ sub clone
 	$clone->{"filenames"} = [ @{ $self->{"filenames"} } ];
 	$clone->{"validkeys"} = [ @{ $self->{"validkeys"} } ];
 
-	foreach my $file ( keys %{ $self->{"file_fields"} } )
-		{
+	foreach my $file ( keys %{ $self->{"file_fields"} } ) {
 		$clone->{"file_fields"}{ $file }
 			= [ @{ $self->{"file_fields"}{ $file } } ];
 		}
 
-	foreach my $key ( $self->directives )
-		{
+	foreach my $key ( $self->directives ) {
 		$clone->set( $key, $self->get( $key ) );
 		}
 
@@ -634,19 +607,16 @@ if you specified the same file twice.
 
 =cut
 
-sub save
-	{
+sub save {
 	my $self = shift;
 	my @args = @_;
 
-	if( @args == 0 ) # no args!
-		{
+	if( @args == 0 ) { # no args!
 		carp "No arguments to method!";
 		return;
 		}
 
-	if( @args == 1 )	# this is a single file
-		{
+	if( @args == 1 ) { # this is a single file
 		push @args, [ $self->directives ];
 		}
 
@@ -654,40 +624,34 @@ sub save
 
 	my %hash = @args;
 
-	foreach my $value ( values %hash )
-		{
+	foreach my $value ( values %hash ) {
 		croak "Argument is not an array reference"
 			unless ref $value eq ref [];
 		}
 
-	foreach my $file ( keys %hash )
-		{
+	foreach my $file ( keys %hash ) {
 		carp $ERROR unless $self->_save( $file, $hash{$file} );
 		}
 
 	1;
 	}
 
-sub _save
-	{
+sub _save {
 	my( $self, $file, $directives ) = @_;
 
-	unless( ref $directives eq ref [] )
-		{
+	unless( ref $directives eq ref [] ) {
 		$ERROR = 'Argument is not an array reference';
 		return;
 		}
 
 	my $fh;
-	unless( open $fh, ">",  $file )
-		{
+	unless( open $fh, ">",  $file ) {
 		$ERROR = $!;
 		return;
 		}
 
-	foreach my $directive ( @$directives )
-		{
-		print $fh ( 
+	foreach my $directive ( @$directives ) {
+		print $fh (
 			join( "\t", $directive, $self->get( $directive ) ),
 			"\n"
 			);
@@ -709,32 +673,30 @@ Takes a line of text and turns it into the directive and value.
 =cut
 
 
-sub parse_line
-	{
+sub parse_line {
 	return ( $1, $3 ) if $_[0] =~ /
 		^\s*
 
 		(
 		[^\s=]+
 		)
-		
+
 		\s*
 		[=]?
 		\s*
-		
+
 		(['"]?)
 			(.*?)
 		\2
-		
+
 		\s*
-		
+
 		$/x;
 
 	croak "Config: Can't parse line: $_[0]\n";
 	}
 
-sub _init_errors
-	{
+sub _init_errors {
 	%ERROR = ();
 	$Error = undef;
 	$ERROR = undef;
@@ -752,12 +714,11 @@ This function croaks if a declared key does not exist.
 
 =cut
 
-sub _validate_keys
-	{
+sub _validate_keys {
 	my $self = shift;
 
 	return SUCCESS unless exists $self->{"validkeys"};
-	
+
 	croak "validkeys was not an array reference!"
 		unless ref $self->{"validkeys"} eq ref [];
 	my @keys = eval { @{ $self->{"validkeys"} } };
@@ -832,7 +793,7 @@ brian d foy, C<< <bdfoy@cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2009 brian d foy.  All rights reserved.
+Copyright (c) 2002-2014 brian d foy.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
