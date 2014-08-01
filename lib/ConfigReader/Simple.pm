@@ -7,11 +7,10 @@ use subs qw(_init_errors);
 use vars qw($VERSION $AUTOLOAD %ERROR $ERROR $Warn $Die);
 
 use Carp qw(croak carp);
-use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-$VERSION = '1.28';
+$VERSION = '1.29';
 $Warn = 0;
 
 our $DEBUG = 0;
@@ -212,9 +211,9 @@ sub new_multiple
 	$args{'Keys'} = [] unless defined $args{'Keys'};
 
 	croak( __PACKAGE__ . ': Files argument must be an array reference')
-		unless isa( $args{'Files'}, ref [] );
+		unless ref $args{'Files'} eq ref [];
 	croak( __PACKAGE__ . ': Keys argument must be an array reference')
-		unless isa( $args{'Keys'}, ref [] );
+		unless ref $args{'Keys'} eq ref [];
 
 	$self->{"filenames"} = $args{'Files'};
 	$self->{"validkeys"} = $args{'Keys'};
@@ -263,9 +262,9 @@ sub new_string
 	$args{'Keys'} = [] unless defined $args{'Keys'};
 
 	croak( __PACKAGE__ . ': Strings argument must be an array reference')
-		unless isa( $args{'Strings'}, ref [] );
+		unless ref $args{'Strings'} eq ref [];
 	croak( __PACKAGE__ . ': Keys argument must be an array reference')
-		unless isa( $args{'Keys'}, ref [] );
+		unless ref $args{'Keys'} eq ref [];
 
 	bless $self, $class;
 
@@ -275,7 +274,7 @@ sub new_string
 	foreach my $string_ref ( @{ $self->{"strings"} } )
 		{
 		croak( __PACKAGE__ . ': Element of Strings is not a scalar reference' )
-			unless isa( $string_ref, ref \ '' );
+			unless ref $string_ref eq ref \ '';
 		$self->parse_string( $string_ref );
 		}
 
@@ -658,7 +657,7 @@ sub save
 	foreach my $value ( values %hash )
 		{
 		croak "Argument is not an array reference"
-			unless isa( $value, 'ARRAY' );
+			unless ref $value eq ref [];
 		}
 
 	foreach my $file ( keys %hash )
@@ -673,7 +672,7 @@ sub _save
 	{
 	my( $self, $file, $directives ) = @_;
 
-	unless( isa( $directives, ref [] ) )
+	unless( ref $directives eq ref [] )
 		{
 		$ERROR = 'Argument is not an array reference';
 		return;
@@ -760,7 +759,7 @@ sub _validate_keys
 	return SUCCESS unless exists $self->{"validkeys"};
 	
 	croak "validkeys was not an array reference!"
-		unless isa( $self->{"validkeys"}, ref [] );
+		unless ref $self->{"validkeys"} eq ref [];
 	my @keys = eval { @{ $self->{"validkeys"} } };
 
 	my @missing = grep { ! exists $self->{"config_data"}{$_} }@keys;

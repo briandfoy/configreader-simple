@@ -8,7 +8,7 @@ eval "use Test::Manifest 1.21";
 	
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
-    'VERSION_FROM'  => 'lib/Simple.pm',
+    'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
 	'ABSTRACT'      => 'Simple configuration file parser',
 	'LICENSE'       => 'perl',
 	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
@@ -16,10 +16,6 @@ WriteMakefile(
     'PREREQ_PM'	    => {
 		'Test::Warn'       => '0',
 		'Test::Output'     => '0',
-		},
-
-	'PM'           => {
-		'lib/Simple.pm'         => '$(INST_LIBDIR)/Simple.pm',
 		},
 
 	(
@@ -37,12 +33,6 @@ WriteMakefile(
 	 	: 
 	 	()
 	 ),
-		                      
-	'MAN3PODS' => {
-		'lib/Simple.pm' => 
-			'$(INST_MAN3DIR)/ConfigReader::Simple.$(MAN3EXT)',
-		},
 
     clean  => { FILES => "ConfigReader-Simple-*" },
-
 	);
