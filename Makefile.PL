@@ -25,7 +25,7 @@ WriteMakefile(
 
 		META_MERGE       => {
 			resources => {
-		  		repository => 'git://github.com/briandfoy/test-output.git',
+		  		repository => 'https://github.com/briandfoy/ConfigReader-Simple',
 				},
 			keywords => ['config'],
 	  		},
