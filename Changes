@@ -6,8 +6,8 @@ Changes for ConfigReader::Simple
 
 1.27 - Wed Aug 20 12:33:43 2008
 	* Fixed bug in _validate_keys that looked at a directives
-	value instead of checking for the directive name. This 
-	affected directives with perly false values when you 
+	value instead of checking for the directive name. This
+	affected directives with perly false values when you
 	gave a list of required keys to new().
 
 1.26 - Fri Nov  9 05:33:07 2007
@@ -24,11 +24,11 @@ Changes for ConfigReader::Simple
 
 1.23 - Mon Apr 10 09:30:54 2006
 	* Changed configuration directive parsing to accept [^\s=]+ instead of
-	just \w+ 
+	just \w+
 	* If you want to name your configuration directives with characters
 	outside of \w, you should upgrade to this version
 	* If your teammates are using config directives with characters
-	outside of \w, they're going to make you upgrade. :)  
+	outside of \w, they're going to make you upgrade. :)
 
 1.21 - Wed Aug 24 18:37:34 2005
 	* Fixed string parsing bug which messed up on continuation lines
@@ -59,11 +59,11 @@ Changes for ConfigReader::Simple
 1.12 - 13-Jul-2002 21:13
 	* added add_config_file() to pull in more configuration directives
 	after you have already created the object.
-	
+
 1.11 - 28-Apr-2002 11:11
 	* added new_multiple() to parse multiple files into the same
 	object.
-	
+
 0.91
 	* you don't need to call parse() since new() does it for you
 	* you can use the NAME=VALUE format in config files thanks to
@@ -73,7 +73,7 @@ Changes for ConfigReader::Simple
 0.9
    * Bumped up the version number because it's nearly mature
    * Now you can declare all, some or no keys and it will only die if a
-     declared key is not found in the config file. 
+     declared key is not found in the config file.
      (Kim Ryan <kimaryan@ozemail.com.au>)
 
 0.5
