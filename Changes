@@ -1,4 +1,4 @@
-Changes for ConfigReader::Simple
+Revision history for Perl module ConfigReader::Simple
 
 1.29 - Sat Aug 16 14:15:15 2014
 	* Check for reference arguments without using UNIVERSAL::isa
