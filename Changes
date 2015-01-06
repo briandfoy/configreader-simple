@@ -1,31 +1,31 @@
 Revision history for Perl module ConfigReader::Simple
 
-1.29 - Sat Aug 16 14:15:15 2014
+1.29 - 2014-08-16
 	* Check for reference arguments without using UNIVERSAL::isa
 
-1.28 - Tue Jun  9 23:57:40 2009
+1.28 - 2009-06-09
 	* Various distro fixes, correct license, and new Makemaker
 	hotness. No need to upgrade.
 
-1.27 - Wed Aug 20 12:33:43 2008
+1.27 - 2008-08-20
 	* Fixed bug in _validate_keys that looked at a directives
 	value instead of checking for the directive name. This
 	affected directives with perly false values when you
 	gave a list of required keys to new().
 
-1.26 - Fri Nov  9 05:33:07 2007
+1.26 - 2007-11-09
 	* cleanups for the move from CVS to SVN, and for the latest kwalitee
 	* no need to upgrade
 
-1.25 - Fri Mar 16 18:09:27 2007
+1.25 - 2007-03-16
 	* Fixing up distro and verifying that all bugs in RT are fixed
 	* A call to new() without args now doesn't try to open the null file
 
-1.24 - Tue Jan  9 22:02:27 2007
+1.24 - 2007-01-09
 	* updated copyright and license info
 	* no code changes, so no need to upgrade
 
-1.23 - Mon Apr 10 09:30:54 2006
+1.23 - 2006-04-10
 	* Changed configuration directive parsing to accept [^\s=]+ instead of
 	just \w+
 	* If you want to name your configuration directives with characters
@@ -33,16 +33,16 @@ Revision history for Perl module ConfigReader::Simple
 	* If your teammates are using config directives with characters
 	outside of \w, they're going to make you upgrade. :)
 
-1.21 - Wed Aug 24 18:37:34 2005
+1.21 - 2005-08-24
 	* Fixed string parsing bug which messed up on continuation lines
 	* cloning an object now makes a deep copy, fixing another bug
 	* Removed all module dependencies except Test::More
 
-1.18 - Tue Feb 10 20:46:05 2004
+1.18 - 2004-02-10
 	* Adam Trickett added support for continuation lines
 	* I added docs for config file formats
 
-1.17 - Sun Nov 30 11:12:50 2003
+1.17 - 2003-11-30
 	* some fix ups for the POD docs
 	* fixed a problem in t/pod.t so the test finds the files
 	* if you already have this installed, you don't need this update
