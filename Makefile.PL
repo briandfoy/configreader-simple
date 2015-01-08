@@ -2,38 +2,53 @@ use 5.008;
 use strict;
 use warnings;
 	
-my $github    = 'https://github.com/briandfoy/';
-my $main_file = 'lib/ConfigReader/Simple.pm';
+use File::Spec::Functions qw(catfile);
+
+my $module    = 'ConfigReader::Simple';
+my $github    = 'https://github.com/briandfoy/ConfigReader-Simple';
+my $main_file = catfile( 'lib', split /::/, "$module.pm" );
 
 my %WriteMakefile = (
-	MIN_PERL_VERSION => 5.008,
+	'MIN_PERL_VERSION' => 5.008,
 
-    'NAME'	        => 'ConfigReader::Simple',
+    'NAME'	        => $module,
     'VERSION_FROM'  => $main_file,
 	'ABSTRACT_FROM' => $main_file,
 	'LICENSE'       => 'perl',
 	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
-	
-    'PREREQ_PM'	    => {
-		'Test::Warn'       => '0',
-		'Test::Output'     => '0',
+
+	'CONFIGURE_REQUIRES' => {
+		'ExtUtils::MakeMaker' => '6.64',
 		},
 
-	(
-	$ExtUtils::MakeMaker::VERSION ge '6.48' ? 
-		(
+	'BUILD_REQUIRES' => {
+		},
 
-		META_MERGE       => {
-			resources => {
-		  		repository => 'https://github.com/briandfoy/ConfigReader-Simple',
+	'TEST_REQUIRES' => {
+		'Test::More'   => '0.94',
+		'Test::Warn'   => '0',
+		'Test::Output' => '0',
+		},
+
+	'PREREQ_PM'     => {
+		},
+
+	'META_MERGE' => {
+		'meta-spec' => { version => 2 },
+		keywords => ['config'],
+		resources => {
+			repository => {
+				type => 'git',
+				url  => "$github.git",
+				web  => $github,
 				},
-			keywords => ['config'],
-	  		},
-	 	) 
-	 	: 
-	 	()
-	 ),
-
+			bugtraker => {
+				web    => "$github/issues",
+				},
+			homepage => $github,
+			},
+		},
+	
     clean  => { FILES => "ConfigReader-Simple-*" },
 	);
 
