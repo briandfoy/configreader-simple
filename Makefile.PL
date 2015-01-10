@@ -5,6 +5,8 @@ use warnings;
 use File::Spec::Functions qw(catfile);
 
 my $module    = 'ConfigReader::Simple';
+( my $dist = $module ) =~ s/::/-/g;
+
 my $github    = 'https://github.com/briandfoy/ConfigReader-Simple';
 my $main_file = catfile( 'lib', split /::/, "$module.pm" );
 
