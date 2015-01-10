@@ -1,10 +1,12 @@
 use 5.008;
+
+package ConfigReader::Simple;
 use strict;
 use warnings;
 	
 use File::Spec::Functions qw(catfile);
 
-my $module    = 'ConfigReader::Simple';
+my $module    = __PACKAGE__;
 ( my $dist = $module ) =~ s/::/-/g;
 
 my $github    = 'https://github.com/briandfoy/ConfigReader-Simple';
