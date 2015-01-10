@@ -52,7 +52,7 @@ my %WriteMakefile = (
 			},
 		},
 	
-    clean  => { FILES => "ConfigReader-Simple-*" },
+	clean => { FILES => "$dist-*" },
 	);
 
 sub arguments { \%WriteMakefile }
