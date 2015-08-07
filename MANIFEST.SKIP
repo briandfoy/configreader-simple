@@ -58,7 +58,8 @@
 #!end included /usr/local/perls/perl-5.20.0/lib/5.20.0/ExtUtils/MANIFEST.SKIP
 
 
-.lwpcookies
-.releaserc
+\.lwpcookies
+\.releaserc
 ConfigReader-Simple-*
 \.svncover_db
+\.travis\.yml
