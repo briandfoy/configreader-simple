@@ -19,6 +19,8 @@ my $Error  = '';
 sub SUCCESS() { 1 };
 sub FAILURE() { 0 };
 
+=encoding utf8
+
 =head1 NAME
 
 ConfigReader::Simple - A simple line-oriented configuration file parser
