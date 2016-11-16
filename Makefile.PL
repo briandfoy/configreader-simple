@@ -67,6 +67,14 @@ my %WriteMakefile = (
 		},
 
 	'PREREQ_PM'     => {
+		'Carp'                  => '0',
+		'Data::Dumper'          => '0',
+		'File::Spec'            => '0',
+		'File::Spec::Functions' => '0',
+		'strict'                => '0',
+		'subs'                  => '0',
+		'vars'                  => '0',
+		'warnings'              => '0',
 		},
 
 	'META_MERGE' => {
