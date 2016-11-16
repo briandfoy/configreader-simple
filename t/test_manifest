@@ -1,7 +1,6 @@
 load.t
 pod.t
 pod_coverage.t
-prereq.t
 validate_keys.t
 parse.t
 parse_line.t
