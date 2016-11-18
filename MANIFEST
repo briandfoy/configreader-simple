@@ -27,7 +27,6 @@ t/parse_line.t
 t/parse_string.t
 t/pod.t
 t/pod_coverage.t
-t/prereq.t
 t/remove.t
 t/save.t
 t/set.t
