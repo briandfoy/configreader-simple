@@ -1,5 +1,9 @@
 Revision history for Perl module ConfigReader::Simple
 
+1.291 2016-11-23T21:08:11Z
+	* Remove the prereq test, but oddly, update all the prereqs. If it
+	shows up in a use statement, it shows up in the prereqs.
+
 1.29 - 2014-08-16
 	* Check for reference arguments without using UNIVERSAL::isa
 
