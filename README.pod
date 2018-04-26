@@ -2,6 +2,16 @@
 
 =encoding utf8
 
+=for HTML <a href="https://travis-ci.org/briandfoy/ConfigReader-Simple"><img src="https://travis-ci.org/briandfoy/ConfigReader-Simple.svg?branch=master" /></a>
+
+=for HTML <a href='https://ci.appveyor.com/project/briandfoy/ConfigReader-Simple'><img src='https://ci.appveyor.com/api/projects/status/j1f3xhrl7jko6wti?svg=true' /></a>
+
+=for HTML <a href='https://coveralls.io/github/briandfoy/ConfigReader-Simple?branch=master'><img src='https://coveralls.io/repos/github/briandfoy/ConfigReader-Simple/badge.svg?branch=master' alt='Coverage Status' /></a>
+
+=for HTML <a href="https://github.com/briandfoy/ConfigReader-Simple/blob/master/LICENSE"><img src="https://img.shields.io/cpan/l/ConfigReader-Simple.svg" /></a>
+
+=for HTML <a href="http://www.metacpan.org/module/ConfigReader::Simple"><img src="https://img.shields.io/cpan/v/ConfigReader-Simple.svg" /></A>
+
 =head1 The ConfigReader::Simple module
 
 This is the I<README> for the L<ConfigReader::Simple> Perl module. You're probably 
