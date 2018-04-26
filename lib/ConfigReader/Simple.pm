@@ -787,7 +787,7 @@ Greg White has been a very patient user and tester.
 
 The source is in Github:
 
- http://github.com/briandfoy/ConfigReader-Simple/tree/master
+	http://github.com/briandfoy/ConfigReader-Simple/
 
 =head1 AUTHORS
 
