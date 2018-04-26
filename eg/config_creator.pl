@@ -16,13 +16,11 @@ in the process.
 
 =head1 SOURCE AVAILABILITY
 
-This source is part of a SourceForge project which always has the
-latest sources in CVS, as well as all of the previous releases.
+=head1 SOURCE AVAILABILITY
 
-	https://sourceforge.net/projects/brian-d-foy/
-	
-If, for some reason, I disappear from the world, one of the other
-members of the project can shepherd this module appropriately.
+The source is in Github:
+
+	http://github.com/briandfoy/ConfigReader-Simple/
 
 =head1 AUTHORS
 
