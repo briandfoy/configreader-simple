@@ -7,7 +7,7 @@ config_creator.pl - read a configuration description and prompt for value
 =head1 SYNOPSIS
 
 	config_creator.pl description_file
-	
+
 =head1 DESCRIPTION
 
 The config_creator.pl program reads a configuration description file
@@ -44,22 +44,22 @@ while( <> )
 	next if m/\s*#/;
 	chomp;
 	my( $directive, $description ) = split m/\s+/, $_, 2;
-	
+
 	my $answer = prompt( $description );
-	
+
 	$config .= "$directive $answer\n";
 	}
-	
+
 print $config;
 
 sub prompt
 	{
 	my $message = shift;
-	
+
 	print "$message> ";
-	
+
 	my $answer = <STDIN>;
 	chomp $answer;
-	
+
 	return $answer;
 	}
