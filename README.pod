@@ -10,7 +10,7 @@
 
 =for HTML <a href="https://github.com/briandfoy/ConfigReader-Simple/blob/master/LICENSE"><img src="https://img.shields.io/cpan/l/ConfigReader-Simple.svg" /></a>
 
-=for HTML <a href="http://www.metacpan.org/module/ConfigReader::Simple"><img src="https://img.shields.io/cpan/v/ConfigReader-Simple.svg" /></A>
+=for HTML <a href="https://metacpan.org/pod/ConfigReader::Simple"><img src="https://img.shields.io/cpan/v/ConfigReader-Simple.svg" /></A>
 
 =head1 The ConfigReader::Simple module
 
@@ -23,7 +23,7 @@ for any Perl module.
 
 To read about L<ConfigReader::Simple>, look at the embedded documentation
 in the module itself. Inside the distribution, you can format it
-with L<perldoc|http://perldoc.perl.org/perldoc.html>:
+with L<perldoc|https://perldoc.perl.orgperldoc.html>:
 
 	% perldoc lib/ConfigReader/Simple.pm
 
@@ -33,7 +33,7 @@ name instead of the file location:
 	% perldoc ConfigReader::Simple
 
 You can read the documentation and inspect the meta data at
-L<MetaCPAN|http://www.metacpan.org/module/ConfigReader::Simple>.
+L<MetaCPAN|https://metacpan.org/pod/ConfigReader::Simple>.
 
 The standard module documentation has example uses in the SYNOPSIS
 section, but you can also look in the I<examples/> directory (if it's
