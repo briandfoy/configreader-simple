@@ -131,7 +131,7 @@ line. These three entries are the same:
 	from \
 	Peru
 
-If a line is only whitespace, or the first whitespace character is
+If a line is only whitespace, or the first non-whitespace character is
 a #, the Perl comment character, C<ConfigReader::Simple> ignores the
 line unless it is the continuation of the previous line.
 
