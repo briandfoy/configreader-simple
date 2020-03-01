@@ -400,7 +400,7 @@ sub parse_string {
 	chomp( @lines );
 #	carp "A: Found " . @lines . " lines" if $DEBUG;
 
-	while( my $line = shift @lines ) {
+	while( defined( my $line = shift @lines )) {
 #		carp "1: Line is $line" if $DEBUG;
 
 		CONT: {
