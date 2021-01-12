@@ -65,3 +65,6 @@
 
 ConfigReader-Simple-*
 \.svncover_db
+\bMANIFEST\s\d
+\bChanges\s\d
+
