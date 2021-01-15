@@ -131,7 +131,7 @@ line. These three entries are the same:
 	from \
 	Peru
 
-If a line is only whitespace, or the first whitespace character is
+If a line is only whitespace, or the first non-whitespace character is
 a #, the Perl comment character, C<ConfigReader::Simple> ignores the
 line unless it is the continuation of the previous line.
 
@@ -400,7 +400,7 @@ sub parse_string {
 	chomp( @lines );
 #	carp "A: Found " . @lines . " lines" if $DEBUG;
 
-	while( my $line = shift @lines ) {
+	while( defined( my $line = shift @lines )) {
 #		carp "1: Line is $line" if $DEBUG;
 
 		CONT: {
