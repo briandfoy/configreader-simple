@@ -67,6 +67,6 @@ ConfigReader-Simple-*
 \.svncover_db
 \bMANIFEST\s\d
 \bChanges\s\d
-
+\.icloud$
 \A\.github\b
 
