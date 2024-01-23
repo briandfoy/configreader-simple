@@ -20,7 +20,7 @@ in the process.
 
 The source is in Github:
 
-	http://github.com/briandfoy/ConfigReader-Simple/
+	http://github.com/briandfoy/configreader-simple/
 
 =head1 AUTHORS
 
