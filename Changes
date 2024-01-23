@@ -64,7 +64,6 @@ Revision history for Perl module ConfigReader::Simple
 	* fixed a problem in t/pod.t so the test finds the files
 	* if you already have this installed, you don't need this update
 
-
 1.15 - 2002-10-22
 	* new_multiple can keep going if it cannot read a file
 	* added $Die, $Warn, $ERROR, %Error variables for settings
