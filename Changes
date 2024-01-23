@@ -93,7 +93,7 @@ Revision history for Perl module ConfigReader::Simple
 
 0.5 - 1999-02-10
    * Changed module name to ConfigReader::Simple to match up with
-     other modules in CPAN better. 
+     other modules in CPAN better.
    * Quote delimiters now have to be matched, ie not 'foo" etc.
    * Doesn't get confused by trailing whitespace
    * Copes with quote-delimited strings as long as they're all on the

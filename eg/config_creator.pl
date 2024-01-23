@@ -16,8 +16,6 @@ in the process.
 
 =head1 SOURCE AVAILABILITY
 
-=head1 SOURCE AVAILABILITY
-
 The source is in Github:
 
 	http://github.com/briandfoy/configreader-simple/
@@ -37,8 +35,7 @@ it under the same terms as Perl itself.
 
 my $config = '';
 
-while( <> )
-	{
+while( <> ) {
 	next if m/\s*#/;
 	chomp;
 	my( $directive, $description ) = split m/\s+/, $_, 2;
@@ -50,8 +47,7 @@ while( <> )
 
 print $config;
 
-sub prompt
-	{
+sub prompt maps {
 	my $message = shift;
 
 	print "$message> ";
