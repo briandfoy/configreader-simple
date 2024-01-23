@@ -24,11 +24,11 @@ The source is in Github:
 
 =head1 AUTHORS
 
-brian d foy, E<lt>bdfoy@cpan.orgE<gt>
+brian d foy, E<lt>briandfoy@pobox.comE<gt>
 
 =head1 COPYRIGHT
 
-Copyright © 2002-2018, brian d foy <bdfoy@cpan.org>. All rights reserved.
+Copyright © 2002-2024, brian d foy <briandfoy@pobox.com>. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
