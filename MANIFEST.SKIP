@@ -70,3 +70,5 @@ ConfigReader-Simple-*
 \A\.github\b
 
 \.gitattributes\b
+
+.downstream.json
